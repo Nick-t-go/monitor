@@ -1,0 +1,42 @@
+<ion-view view-title="report">
+
+  <ion-content>
+    <div class="list">
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Date
+        </div>
+       <select name="dateSelect" id="dateSelect" ng-model="data.dateSelect">
+         <option type="date" value="{{date}}" ng-repeat="date in dates" >{{date | date:'yyyy-MM-dd HH:mm'}}</option>
+       </select>
+
+      </label>
+
+    </div>
+    <div class="list">
+
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Fish
+        </div>
+        <select name="fishSelect" id="fishSelect" ng-model="data.fishSelect">
+          <option ng-repeat="fish in fishes" ng-model="selectedFish">{{fish}}</option>
+        </select>
+
+      </label>
+
+    </div>
+
+    <button class="button button-full button-positive" ng-click="getReport(data.fishSelect, data.dateSelect)">
+      Get Report
+    </button>
+
+    <div class="row" ng-repeat="tests in report">
+      <div class="col col-33"><h4>{{tests.test}}</h4></div>
+      <div class="col col-33 col-offset-33"><h4>{{tests.val}}</h4></div>
+    </div>
+
+  </ion-content>
+
+</ion-view>

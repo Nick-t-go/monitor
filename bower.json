@@ -1,0 +1,16 @@
+{
+  "name": "HelloIonic",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.2.1"
+  },
+  "dependencies": {
+    "firebase": "~2.3.2",
+    "ngCordova": "~0.1.23-alpha",
+    "angular-nvd3": "~1.0.5",
+    "angular-animate": "~1.4.3",
+    "d3": "~3.5.12",
+    "angular-sanitize": "~1.4.3",
+    "angular":"~1.4.3"
+  }
+}

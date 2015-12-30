@@ -1,0 +1,51 @@
+<ion-view view-title="watertest">
+
+  <ion-content>
+    <div class="item item-divider">
+      Gold Fish Tank
+    </div>
+    <div ng-repeat="test in goldfishTests">
+    <div class="row">
+      <label>{{test.type}}</label>
+    </div>
+    <div class="row">
+      <div class="col col-90">
+        <i>{{test.min}}</i>
+        <input type="range" ng-model="test.value" name="{{test.type}}" min="{{test.min}}" max="{{test.max}}" step="{{test.step}}" value="{{test.value}}">
+        <i>{{test.max}}</i>
+      </div>
+      <p class="col col-20" >{{test.value}}</p>
+      </div>
+    </div>
+
+    <div class="item item-divider">
+      Tilapia Tank
+    </div>
+    <div ng-repeat="test in tilapiaTests">
+      <div class="row">
+        <label>{{test.type}}</label>
+      </div>
+      <div class="row">
+        <div class="col col-80">
+          <i>{{test.min}}</i>
+          <input type="range" ng-model="test.value" name="{{test.type}}" min="{{test.min}}" max="{{test.max}}" step="{{test.step}}">
+          <i>{{test.max}}</i>
+        </div>
+        <p class="col col-20" >{{test.value}}</p>
+      </div>
+    </div>
+    <div class ="row">
+      <div class="col">
+        <button class="button button-positive" ng-click="submitForm(goldfishTests, tilapiaTests)">
+          Submit
+        </button>
+      </div>
+      <div class="col col-33 col-offset-50">
+        <button ng-click="$ionicGoBack()" class="button  button-assertive">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </ion-content>
+
+</ion-view>
