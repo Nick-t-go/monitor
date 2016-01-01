@@ -1,1 +1,18 @@
 /* Empty. Add your own CSS if you like */
+
+.bar.bar-stable{
+  border-color: #6b46e5;
+  background-color: #886aea;
+}
+
+.bar.bar-stable .title{
+  color: white;
+}
+
+.bar-stable .button.button-clear{
+  color: white;
+}
+
+input {
+text-align:right;
+}

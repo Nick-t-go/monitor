@@ -1,5 +1,5 @@
 <ion-modal-view>
-  <ion-header-bar>
+  <ion-header-bar class="bar bar-header bar-royal">
     <h1 class="title">Login</h1>
     <div class="buttons">
       <button class="button button-clear" ng-click="closeLogin()">Close</button>
@@ -17,9 +17,31 @@
           <input type="password" ng-model="loginData.password">
         </label>
         <label class="item">
-          <button class="button button-block button-positive" type="submit">Log in</button>
+          <button class="button button-block button-calm" type="submit">Log in</button>
         </label>
       </div>
     </form>
+    <div class="row">
+      <div class="col col-offset-50">OR</div>
+    </div>
+    <div class="row">
+      <button ng-hide="authData"  ng-click="gLogin()" class="button button-block button-positive icon-left ion-social-google ">
+        Log In with Google
+      </button>
+    </div>
+
+    <div class="card" ng-show="authData">
+      <div class="item item-text-wrap">
+        Hello {{authData.google.displayName}}!
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-offset-50">OR</div>
+    </div>
+    <div class="row">
+      <button  ng-click="signup()" class="button button-block button-royal">
+        Sign Up
+      </button>
+    </div>
   </ion-content>
 </ion-modal-view>
