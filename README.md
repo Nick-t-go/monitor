@@ -12,7 +12,11 @@ Follows Ionic's sidemenu template.
 ## To Dos
 
 1) Allow users to create tests and test intervals. 
+
 2) Allow users to store more than just water tests.
+
 3) Add more visulations for monitoring test results.
+
 4) Alert user of negative test results and supply possible causes and fixes
+
 5) Look into automization of test taking and correcting.
