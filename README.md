@@ -3,13 +3,13 @@ Monitor App
 
 A starting project using Ionic for recording measurments taken for aquariums, greenhouses, and aquaponic systems.
 
-## Porject Specifics
+## Project Specifics
 
 Currently uses Firebase as backend to store test results and user information.
 Uses d3 to display summary of test results.
 Follows Ionic's sidemenu template.
 
-## ToDo
+## To Dos
 
 1) Allow users to create tests and test intervals. 
 2) Allow users to store more than just water tests.
