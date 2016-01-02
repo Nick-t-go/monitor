@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['app.factories'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, Auth, Tests) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -19,6 +19,7 @@ angular.module('starter.controllers', ['app.factories'])
     $scope.modal = modal;
   });
 
+
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
     $scope.modal.hide();
@@ -28,6 +29,65 @@ angular.module('starter.controllers', ['app.factories'])
   $scope.login = function() {
     $scope.modal.show();
   };
+
+  $scope.gLogin = function() {
+    console.log('ingLogin')
+    Auth.$authWithOAuthRedirect("google").then(function(authData) {
+      // User successfully logged in
+    }).catch(function(error) {
+      if (error.code === "TRANSPORT_UNAVAILABLE") {
+        Auth.$authWithOAuthPopup("google").then(function(authData) {
+          // User successfully logged in. We can log to the console
+          // since we’re using a popup here
+          console.log(authData);
+        });
+      } else {
+        // Another error occurred
+        console.log(error);
+      }
+    });
+
+  };
+
+
+  $ionicModal.fromTemplateUrl('templates/signup.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.signupModal = modal;
+  });
+
+  $scope.mismatch = false;
+
+  $scope.signup = function() {
+    //$scope.modal.hide();
+    $scope.signupModal.show();
+  };
+
+  $scope.closeSignUp = function(){
+    $scope.signupModal.hide();
+  };
+
+  $scope.newUserSubmit = function(newUser){
+    if(!newUser || !newUser.password || newUser.password !== newUser.passwordRe || !newUser.email || !newUser.username){
+      $scope.mismatch = true;
+    }
+    else {
+      Tests.addNewUser(newUser)
+        .then(function(stuff){
+          console.log(stuff);
+        })
+    }
+  };
+
+
+  Auth.$onAuth(function(authData) {
+    if (authData === null) {
+      console.log("Not logged in yet");
+    } else {
+      console.log("Logged in as", authData);
+    }
+    $scope.authData = authData; // This will display the user's name in our view
+  });
 
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {

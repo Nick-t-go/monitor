@@ -1,4 +1,10 @@
 angular.module('app.factories', [])
+
+  .factory("Auth", function($firebaseAuth) {
+    var usersRef = new Firebase("https://domemonitor.firebaseio.com/users");
+    return $firebaseAuth(usersRef);
+  })
+
   .factory('Tests', ['$firebaseArray', function($firebaseArray){
     return {
 
@@ -11,6 +17,31 @@ angular.module('app.factories', [])
           'fish': fish,
           'test': test
         });
+      },
+
+      addNewUser: function(user){
+        var ref = new Firebase('https://domemonitor.firebaseio.com/users');
+        ref.createUser({
+          username:user.username,
+          email: user.email,
+          password: user.password
+        }, function(error, userData) {
+          if (error) {
+            switch (error.code) {
+              case "EMAIL_TAKEN":
+                return "The new user account cannot be created because the email is already in use."
+                break;
+              case "INVALID_EMAIL":
+                return "The specified email is not a valid email.";
+                break;
+              default:
+                return "Error creating user:" + error;
+            }
+          } else {
+            console.log("Successfully created user account with uid:", userData.uid);
+            return userData
+          }
+        })
       },
 
       recordTime: function(time){
