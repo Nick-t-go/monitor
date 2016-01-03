@@ -1,47 +1,49 @@
 <ion-modal-view>
   <ion-header-bar class="bar bar-header bar-royal">
-    <h1 class="title">Login</h1>
+    <h1 ng-hide="authData" class="title">Login</h1>
+    <h1 ng-hide="!authData" class="title">Log Out</h1>
     <div class="buttons">
       <button class="button button-clear" ng-click="closeLogin()">Close</button>
     </div>
   </ion-header-bar>
-  <ion-content>
-    <form ng-submit="doLogin()">
-      <div class="list">
-        <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" ng-model="loginData.username">
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" ng-model="loginData.password">
-        </label>
-        <label class="item">
-          <button class="button button-block button-calm" type="submit">Log in</button>
-        </label>
+  <ion-content id="login">
+    <div>
+      <form ng-hide="authData" ng-submit="doLogin(loginData)">
+        <div class="list">
+          <label class="item item-input">
+            <span class="input-label">Email</span>
+            <input type="text" ng-model="loginData.email">
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Password</span>
+            <input type="password" ng-model="loginData.password">
+          </label>
+          <label class="item">
+            <button class="button button-block button-calm icon-left ion-log-in" type="submit">Log in</button>
+          </label>
+        </div>
+      </form>
+      <div ng-hide="authData">
+        <div class="row">
+          <div class="col col-offset-50">OR</div>
+        </div>
+        <div class="row">
+          <button ng-click="gLogin()" class="button button-block button-positive icon-left ion-social-google ">
+            Log In with Google
+          </button>
+        </div>
+        <div class="row">
+          <div class="col col-offset-50">OR</div>
+        </div>
+        <div class="row">
+          <button  ng-click="signup()" class="button button-block button-royal icon-left ion-person-add">
+            Sign Up
+          </button>
+        </div>
       </div>
-    </form>
-    <div class="row">
-      <div class="col col-offset-50">OR</div>
-    </div>
-    <div class="row">
-      <button ng-hide="authData"  ng-click="gLogin()" class="button button-block button-positive icon-left ion-social-google ">
-        Log In with Google
-      </button>
     </div>
 
-    <div class="card" ng-show="authData">
-      <div class="item item-text-wrap">
-        Hello {{authData.google.displayName}}!
-      </div>
-    </div>
-    <div class="row">
-      <div class="col col-offset-50">OR</div>
-    </div>
-    <div class="row">
-      <button  ng-click="signup()" class="button button-block button-royal">
-        Sign Up
-      </button>
-    </div>
+    <button  ng-hide="!authData" class="button button-block button-assertive icon-left ion-log-out" ng-click="doLogOut()">Log Out</button>
+
   </ion-content>
 </ion-modal-view>
