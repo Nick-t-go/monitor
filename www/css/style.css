@@ -1,5 +1,11 @@
 /* Empty. Add your own CSS if you like */
 
+#login, #sideMenu, #waterTests{
+  background: url("../img/background_img.gif");
+  background-position: center bottom;
+  background-repeat:no-repeat;
+}
+
 .bar.bar-stable{
   border-color: #6b46e5;
   background-color: #886aea;

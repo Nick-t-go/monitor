@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['app.factories'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, Auth, Tests) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, Auth, Tests, $rootScope, $cordovaToast) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -30,6 +30,28 @@ angular.module('starter.controllers', ['app.factories'])
     $scope.modal.show();
   };
 
+
+  $scope.doLogin = function(user) {
+    Auth.$authWithPassword({email: user.email, password: user.password})
+      .then(function(authData) {
+        console.log(authData);
+        $scope.loginData = null;
+        $scope.modal.hide();
+
+        // User successfully logged in
+      }).catch(function(error) {
+          console.log(error);
+      });
+  };
+
+    $scope.doLogOut = function() {
+      Auth.$unauth();
+    };
+
+
+
+
+  // Google Oauth
   $scope.gLogin = function() {
     console.log('ingLogin')
     Auth.$authWithOAuthRedirect("google").then(function(authData) {
@@ -37,8 +59,7 @@ angular.module('starter.controllers', ['app.factories'])
     }).catch(function(error) {
       if (error.code === "TRANSPORT_UNAVAILABLE") {
         Auth.$authWithOAuthPopup("google").then(function(authData) {
-          // User successfully logged in. We can log to the console
-          // since we’re using a popup here
+          $rootScope.user = authData;
           console.log(authData);
         });
       } else {
@@ -50,12 +71,28 @@ angular.module('starter.controllers', ['app.factories'])
   };
 
 
+  //Next thing after auth occurs
+  Auth.$onAuth(function(authData) {
+    if (authData === null) {
+      console.log("Not logged in yet");
+    } else {
+      console.log("Logged in as", authData);
+      $rootScope.user = authData
+
+    }
+    $scope.authData = authData;
+  });
+
+
+
+  //Sign UpModal Initialize
   $ionicModal.fromTemplateUrl('templates/signup.html', {
     scope: $scope
   }).then(function(modal) {
     $scope.signupModal = modal;
   });
 
+  //Methods and properties for SignUp
   $scope.mismatch = false;
 
   $scope.signup = function() {
@@ -67,54 +104,44 @@ angular.module('starter.controllers', ['app.factories'])
     $scope.signupModal.hide();
   };
 
+
   $scope.newUserSubmit = function(newUser){
-    if(!newUser || !newUser.password || newUser.password !== newUser.passwordRe || !newUser.email || !newUser.username){
+
+    if(!newUser || !newUser.password || newUser.password !== newUser.passwordRe || !newUser.email){
       $scope.mismatch = true;
     }
     else {
-      Tests.addNewUser(newUser)
-        .then(function(stuff){
-          console.log(stuff);
-        })
-    }
+      $cordovaToast.show("User Successfully Created, Now Login", 'long', 'top').then(function(success) {
+        console.log("The toast was shown");
+      }, function (error) {
+        console.log("The toast was not shown due to " + error);
+      });
+      Tests.addNewUser(newUser);
+      $scope.signupModal.hide();
+      }
   };
 
 
-  Auth.$onAuth(function(authData) {
-    if (authData === null) {
-      console.log("Not logged in yet");
-    } else {
-      console.log("Logged in as", authData);
-    }
-    $scope.authData = authData; // This will display the user's name in our view
-  });
 
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
+
 })
 
 .controller('WatertestsCtrl', function($scope) {
   $scope.playlists = [
-    { title: 'New Report', id: "watertest" },
-    { title: 'Summary', id: "summary" },
-    { title: 'Reports', id: "report" },
-    { title: 'To Do', id: 4 }
+    { title: 'New Report', id: "watertest", icon: "ion-erlenmeyer-flask" },
+    { title: 'Summary', id: "summary", icon: "ion-ios-list-outline" },
+    { title: 'Reports', id: "report", icon: "ion-stats-bars" },
+    { title: 'To Do', id: 4, icon:"ion-android-create"}
   ];
 
 })
 
-.controller('WatertestCtrl', function($scope, $stateParams, Tests, $state, $ionicHistory) {
+.controller('WatertestCtrl', function($scope, $stateParams, Tests, $state, $ionicHistory, $rootScope) {
     $scope.tanks = ['Gold Fish', 'Tilapia'];
 
     $scope.time = new Date().getTime();
+
 
     $scope.tilapiaTests = [
       {type : 'Temperature', min: 32, max: 100, step:.5, value: 0},
@@ -136,13 +163,13 @@ angular.module('starter.controllers', ['app.factories'])
 
     $scope.submitForm = function(obj1, obj2) {
       obj1.forEach(function (test) {
-        Tests.addToFire('goldfish', test.type, test.value, $scope.time)
+        Tests.addToFire('goldfish', test.type, test.value, $scope.time, $rootScope.user.uid)
       });
       obj2.forEach(function (test) {
-        Tests.addToFire('tilapia', test.type, test.value, $scope.time)
+        Tests.addToFire('tilapia', test.type, test.value, $scope.time, $rootScope.user.uid)
       });
 
-      Tests.recordTime($scope.time);
+      Tests.recordTime($scope.time,$rootScope.user.uid);
 
       $ionicHistory.goBack();
     }
@@ -150,7 +177,7 @@ angular.module('starter.controllers', ['app.factories'])
 
 })
 
-.controller('SummaryCtrl', function($scope, Tests) {
+.controller('SummaryCtrl', function($scope, Tests, $rootScope) {
     $scope.fishes = ['tilapia', 'goldfish'];
 
     $scope.testTypes = [
@@ -222,7 +249,7 @@ angular.module('starter.controllers', ['app.factories'])
 
     $scope.summarize = function(fish, testType){
       console.log($scope.data);
-      Tests.getOneTest(fish, testType)
+      Tests.getOneTest(fish, testType, $rootScope.user.uid)
         .then(function(result){
           $scope.data[0].values = result.map(function(test){
             return [test.date, parseInt(test.val)]
@@ -235,12 +262,12 @@ angular.module('starter.controllers', ['app.factories'])
 
 
 
-.controller('ReportCtrl', function($scope, $stateParams, Tests, $log, $ionicHistory) {
+.controller('ReportCtrl', function($scope, $stateParams, Tests, $log, $ionicHistory, $rootScope) {
 
     $scope.fishes = ['tilapia', 'goldfish'];
     $scope.dates = [];
 
-    Tests.getDates()
+    Tests.getDates($rootScope.user.uid)
       .then(function(times){
         times.forEach(function(time){
           $scope.dates.push(time.$id)
@@ -249,7 +276,7 @@ angular.module('starter.controllers', ['app.factories'])
 
     $scope.getReport = function(fish, date){
       console.log(fish, date);
-      Tests.getTestsByDate(fish, date)
+      Tests.getTestsByDate(fish, date, $rootScope.user.uid)
         .then(function(result){
           console.log(result);
           $scope.report = result
