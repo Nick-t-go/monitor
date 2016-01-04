@@ -30,18 +30,16 @@ angular.module('app.factories', [])
             switch (error.code) {
               case "EMAIL_TAKEN":
                 return "The new user account cannot be created because the email is already in use.";
-                break;
               case "INVALID_EMAIL":
                 return "The specified email is not a valid email.";
-                break;
               default:
                 return "Error creating user:" + error;
             }
           } else {
             console.log("Successfully created user account with uid:", userData.uid);
-            return "success"
+            return "success";
           }
-        })
+        });
       },
 
       recordTime: function(time, uid){
@@ -57,9 +55,9 @@ angular.module('app.factories', [])
         return array.$loaded()
           .then(function(){
             return array.filter(function(el){
-              return el.fish === fish && el['test'] === testType;
+              return el.fish === fish && el.test === testType;
             });
-          })
+          });
       },
 
       getDates: function (uid) {
@@ -67,9 +65,8 @@ angular.module('app.factories', [])
         var datesArray = $firebaseArray(ref);
         return datesArray.$loaded()
           .then(function(){
-            console.log(datesArray)
-            return datesArray
-          })
+            return datesArray;
+          });
       },
 
       getTestsByDate: function(fish, date, uid){
@@ -80,10 +77,10 @@ angular.module('app.factories', [])
             return testArray.filter(function(test){
               return test.fish === fish && test.date == date;
             });
-          })
+          });
       }
 
 
 
-    }
+    };
   }]);
