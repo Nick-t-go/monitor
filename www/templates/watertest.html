@@ -9,14 +9,19 @@
       <label>{{test.type}}</label>
     </div>
     <div class="row">
-      <div class="col col-90">
-        <i>{{test.min}}</i>
-        <input type="range" ng-model="test.value" name="{{test.type}}" min="{{test.min}}" max="{{test.max}}" step="{{test.step}}" value="{{test.value}}">
+      <div class="col">
+        <i style="white-space: nowrap;">{{test.min}}</i>
+        </div>
+      <div class="col col-33 col-offset-90">
         <i>{{test.max}}</i>
+        </div>
       </div>
-      <p class="col col-20" >{{test.value}}</p>
+      <div ng-class="test.type" style="height:40px">
+        <input style="width: 100%; background-color: #0000FF" type="range" ng-model="test.value" name="{{test.type}}" min="{{test.min}}" max="{{test.max}}" step="{{test.step}}" value="{{test.value}}">
       </div>
-    </div>
+      <p class="col col-offset-50" >{{test.value}}</p>
+      </div>
+
 
     <div class="item item-divider">
       Tilapia Tank
@@ -26,14 +31,19 @@
         <label>{{test.type}}</label>
       </div>
       <div class="row">
-        <div class="col col-80">
-          <i>{{test.min}}</i>
-          <input type="range" ng-model="test.value" name="{{test.type}}" min="{{test.min}}" max="{{test.max}}" step="{{test.step}}">
+        <div class="col">
+          <i style="white-space: nowrap;">{{test.min}}</i>
+        </div>
+        <div class="col col-33 col-offset-90">
           <i>{{test.max}}</i>
         </div>
-        <p class="col col-20" >{{test.value}}</p>
       </div>
+      <div ng-class="test.type" style="height:40px">
+        <input style="width: 100%; background-color: #0000FF" type="range" ng-model="test.value" name="{{test.type}}" min="{{test.min}}" max="{{test.max}}" step="{{test.step}}" value="{{test.value}}">
+      </div>
+      <p class="col col-offset-50" >{{test.value}}</p>
     </div>
+
     <div class ="row">
       <div class="col">
         <button class="button button-positive" ng-click="submitForm(goldfishTests, tilapiaTests)">
