@@ -53,17 +53,14 @@ angular.module('starter.controllers', ['app.factories'])
 
   // Google Oauth
   $scope.gLogin = function() {
-    console.log('ingLogin')
     Auth.$authWithOAuthRedirect("google").then(function(authData) {
       // User successfully logged in
     }).catch(function(error) {
       if (error.code === "TRANSPORT_UNAVAILABLE") {
         Auth.$authWithOAuthPopup("google").then(function(authData) {
           $rootScope.user = authData;
-          console.log(authData);
         });
       } else {
-        // Another error occurred
         console.log(error);
       }
     });
@@ -77,7 +74,7 @@ angular.module('starter.controllers', ['app.factories'])
       console.log("Not logged in yet");
     } else {
       console.log("Logged in as", authData);
-      $rootScope.user = authData
+      $rootScope.user = authData;
 
     }
     $scope.authData = authData;
@@ -144,35 +141,35 @@ angular.module('starter.controllers', ['app.factories'])
 
 
     $scope.tilapiaTests = [
-      {type : 'Temperature', min: 32, max: 100, step:.5, value: 0},
-      {type : "PH", min:5, max: 9, step:.5, value: 0},
-      {type : 'Ammonia', min: 0, max:8, step:.25,value: 0},
-      {type : 'Phosphate', min:0, max: 10, step:.25,value: 0},
-      {type : 'Nitrite', min:0, max: 5, step:.25, value: 0},
+      {type : 'Temperature', min: 32, max: 100, step:0.5, value: 0},
+      {type : "PH", min:5, max: 9, step:0.5, value: 0},
+      {type : 'Ammonia', min: 0, max:8, step:0.25,value: 0},
+      {type : 'Phosphate', min:0, max: 10, step:0.25,value: 0},
+      {type : 'Nitrite', min:0, max: 5, step:0.25, value: 0},
       {type : 'Nitrate', min:0, max: 160, step: 5,value: 0}
       ];
 
     $scope.goldfishTests = [
-      {type : 'Temperature', min: 32, max: 100, step:.5, value: 0},
-      {type : "PH", min:5, max: 9, step:.5, value: 0},
-      {type : 'Ammonia', min: 0, max:8, step:.25,value: 0},
-      {type : 'Phosphate', min:0, max: 10, step:.25,value: 0},
-      {type : 'Nitrite', min:0, max: 5, step:.25, value: 0},
+      {type : 'Temperature', min: 32, max: 100, step:0.5, value: 0},
+      {type : "PH", min:5, max: 9, step:0.5, value: 0},
+      {type : 'Ammonia', min: 0, max:8, step:0.25,value: 0},
+      {type : 'Phosphate', min:0, max: 10, step:0.25,value: 0},
+      {type : 'Nitrite', min:0, max: 5, step:0.25, value: 0},
       {type : 'Nitrate', min:0, max: 160, step: 5,value: 0}
     ];
 
     $scope.submitForm = function(obj1, obj2) {
       obj1.forEach(function (test) {
-        Tests.addToFire('goldfish', test.type, test.value, $scope.time, $rootScope.user.uid)
+        Tests.addToFire('goldfish', test.type, test.value, $scope.time, $rootScope.user.uid);
       });
       obj2.forEach(function (test) {
-        Tests.addToFire('tilapia', test.type, test.value, $scope.time, $rootScope.user.uid)
+        Tests.addToFire('tilapia', test.type, test.value, $scope.time, $rootScope.user.uid);
       });
 
       Tests.recordTime($scope.time,$rootScope.user.uid);
 
       $ionicHistory.goBack();
-    }
+    };
 
 
 })
@@ -211,7 +208,7 @@ angular.module('starter.controllers', ['app.factories'])
         xAxis: {
           axisLabel: 'X Axis',
           tickFormat: function(d) {
-            return d3.time.format("%d %b")(new Date(d))
+            return d3.time.format("%d %b")(new Date(d));
           },
           rotateLabels: 90,
           showMaxMin: false
@@ -252,10 +249,10 @@ angular.module('starter.controllers', ['app.factories'])
       Tests.getOneTest(fish, testType, $rootScope.user.uid)
         .then(function(result){
           $scope.data[0].values = result.map(function(test){
-            return [test.date, parseInt(test.val)]
+            return [test.date, parseInt(test.val)];
           });
-        })
-    }
+        });
+    };
 
 
 })
@@ -270,8 +267,8 @@ angular.module('starter.controllers', ['app.factories'])
     Tests.getDates($rootScope.user.uid)
       .then(function(times){
         times.forEach(function(time){
-          $scope.dates.push(time.$id)
-        })
+          $scope.dates.push(time.$id);
+        });
       });
 
     $scope.getReport = function(fish, date){
@@ -279,8 +276,8 @@ angular.module('starter.controllers', ['app.factories'])
       Tests.getTestsByDate(fish, date, $rootScope.user.uid)
         .then(function(result){
           console.log(result);
-          $scope.report = result
-        })
+          $scope.report = result;
+        });
     };
 
 
