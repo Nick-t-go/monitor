@@ -3,25 +3,25 @@
 
     <div ng-hide="authData">
       <div  class="row">
-        <button class="col col-33 col-offset-33 button icon-left ion-log-in button-positive" ng-click="login()">Login</button>
+        <button  class="col button home icon-left ion-log-in button-positive"  ng-click="login()">Login</button>
       </div>
       <div class="row">
         <br>
       </div>
       <div class="row">
-        <button class="col col-33 col-offset-33 button icon-left ion-person-add button-calm" ng-click="signup()">Sign Up</button>
+        <button  class="col button home icon-left ion-person-add button-calm" ng-click="signup()">Sign Up</button>
       </div>
     </div>
 
     <div>
       <div ng-hide="!authData" class="row">
-        <button class="col col-33 col-offset-33 button icon-left ion-log-in button-assertive" ng-click="login()">Logout</button>
+        <button class="col button home icon-left ion-log-out button-assertive" ng-click="login()">Logout</button>
       </div>
       <div class="row">
         <br>
       </div>
-      <div class="row">
-        <button class="col col-33 col-offset-33 button icon-left ion-navicon button-calm" menu-toggle="left">Menu</button>
+      <div class="row" ng-hide="!authData">
+        <button class="col button home icon-left ion-navicon button-calm" menu-toggle="left">Menu</button>
       </div>
     </div>
 

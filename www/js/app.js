@@ -41,7 +41,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
       controller: 'AppCtrl'
   })
 
-    .state('app.login', {
+    .state('app.home', {
       url: '/home',
       views: {
         'menuContent': {
@@ -57,6 +57,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
         'menuContent': {
           templateUrl: 'templates/signup.html',
           controller: 'SignupCtrl'
+        }
+      }
+    })
+
+    .state('app.login', {
+      url: '/login',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/login.html',
+          controller: 'LoginCtrl'
         }
       }
     })

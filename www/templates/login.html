@@ -1,11 +1,4 @@
-<ion-modal-view>
-  <ion-header-bar class="bar bar-header bar-royal">
-    <h1 ng-hide="authData" class="title">Login</h1>
-    <h1 ng-hide="!authData" class="title">Log Out</h1>
-    <div class="buttons">
-      <button class="button button-clear" ng-click="closeLogin()">Close</button>
-    </div>
-  </ion-header-bar>
+<ion-view view-title="Login/Logout">
   <ion-content id="login">
     <div>
       <form ng-hide="authData" ng-submit="doLogin(loginData)">
@@ -19,7 +12,7 @@
             <input type="password" ng-model="loginData.password">
           </label>
           <label class="item">
-            <button class="button button-block button-calm icon-left ion-log-in" type="submit">Log in</button>
+            <button class="col button home button-calm icon-left ion-log-in" type="submit">Log in</button>
           </label>
         </div>
       </form>
@@ -28,7 +21,7 @@
           <div class="col col-offset-50">OR</div>
         </div>
         <div class="row">
-          <button ng-click="gLogin()" class="button button-block button-positive icon-left ion-social-google ">
+          <button ng-click="gLogin()" class="col button home button-positive icon-left ion-social-google ">
             Log In with Google
           </button>
         </div>
@@ -36,14 +29,14 @@
           <div class="col col-offset-50">OR</div>
         </div>
         <div class="row">
-          <button  ng-click="signup()" class="button button-block button-royal icon-left ion-person-add">
+          <button  ng-click="signup()" class="col button home button-royal icon-left ion-person-add">
             Sign Up
           </button>
         </div>
       </div>
     </div>
 
-    <button  ng-hide="!authData" class="button button-block button-assertive icon-left ion-log-out" ng-click="doLogOut()">Log Out</button>
+    <button ng-hide="!authData" class="col button home icon-left ion-log-out button-assertive" ng-click="doLogOut()">Log Out</button>
 
   </ion-content>
-</ion-modal-view>
+</ion-view>
