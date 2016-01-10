@@ -1,0 +1,40 @@
+<ion-view view-title="Setup Tanks">
+
+  <ion-content>
+    <ion-list>
+      <ion-radio ng-model="choice" ng-value="'My Tanks'">My Tanks</ion-radio>
+      <ion-radio ng-model="choice" ng-value="'Add Tank'">Add Tank</ion-radio>
+
+
+      <div ng-show="choice==='My Tanks'" ng-repeat="tank in tanks" class="card">
+        <div ng-hide="edit" class="item item-divider">
+          {{tank.name}}
+        </div>
+        <div ng-show="edit" class="item item-input-inset">
+          <label class="item-input-wrapper">
+            <input type="text" ng-model="tank.name" value="tank.name">
+          </label>
+          <button ng-click=editSubmit(tank) class="button button-small">
+            Submit
+          </button>
+        </div>
+        <div class="item item-text-wrap row">
+          <button class="col col-30 padding-right button button-small button-positive icon-left ion-edit"  ng-disabled="true">Edit(coming soon)</button>
+          <button class="col col-30 padding-left button button-small button-assertive icon-right ion-trash-b" ng-click="confirmDelete(tank)">Delete</button>
+        </div>
+      </div>
+
+      <div ng-show="choice ==='Add Tank'" class="item item-input-inset">
+        <label class="item-input-wrapper">
+          <input type="text" ng-model="newName" placeholder="Enter Tank Name">
+        </label>
+        <button ng-click=createSubmit(newName) class="button button-small">
+          Create
+        </button>
+      </div>
+
+  </ion-content>
+
+
+
+</ion-view>

@@ -9738,6 +9738,22 @@ a.button {
 input {
   text-align: right; }
 
+.item.item-input.item-floating-label.row {
+  height: 5em; }
+
+input.input-fix {
+  width: 100px; }
+
+div.list.add-test {
+  margin-bottom: 5px; }
+
+.error-message {
+  color: crimson; }
+
+.not-active {
+  pointer-events: none;
+  cursor: default; }
+
 .Temperature {
   background-image: linear-gradient(to right, #CC00FF, #CC0000); }
 

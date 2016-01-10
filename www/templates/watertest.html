@@ -1,10 +1,18 @@
-<ion-view view-title="watertest">
+<ion-view view-title="New Report">
 
   <ion-content>
-    <div class="item item-divider">
-      Gold Fish Tank
-    </div>
-    <div ng-repeat="test in goldfishTests">
+    <label class="item item-input item-select">
+      <div class="input-label ">
+        Choose a Tank
+      </div>
+      <select name="tankSelect" id="tankSelect" ng-model="data.tankSelect">
+        <option ng-repeat="tank in tanks" >{{tank}}</option>
+      </select>
+    </label>
+
+    <div ng-show="data.tankSelect" class="item item-divider">
+      <h2 class="col col-offset-50">{{data.tankSelect}}</h2>
+    <div ng-repeat="test in tests">
     <div class="row">
       <label>{{test.type}}</label>
     </div>
@@ -16,37 +24,16 @@
         <i>{{test.max}}</i>
         </div>
       </div>
-      <div ng-class="test.type" style="height:40px">
+      <div style="height:40px" ng-style="{'background-image': 'linear-gradient(to right,' +test.colors.join(',')+ ')'}">
         <input style="width: 100%; background-color: #0000FF" type="range" ng-model="test.value" name="{{test.type}}" min="{{test.min}}" max="{{test.max}}" step="{{test.step}}" value="{{test.value}}">
       </div>
       <p class="col col-offset-50" >{{test.value}}</p>
       </div>
-
-
-    <div class="item item-divider">
-      Tilapia Tank
-    </div>
-    <div ng-repeat="test in tilapiaTests">
-      <div class="row">
-        <label>{{test.type}}</label>
       </div>
-      <div class="row">
-        <div class="col">
-          <i style="white-space: nowrap;">{{test.min}}</i>
-        </div>
-        <div class="col col-33 col-offset-90">
-          <i>{{test.max}}</i>
-        </div>
-      </div>
-      <div ng-class="test.type" style="height:40px">
-        <input style="width: 100%; background-color: #0000FF" type="range" ng-model="test.value" name="{{test.type}}" min="{{test.min}}" max="{{test.max}}" step="{{test.step}}" value="{{test.value}}">
-      </div>
-      <p class="col col-offset-50" >{{test.value}}</p>
-    </div>
 
     <div class ="row">
       <div class="col">
-        <button class="button button-positive" ng-click="submitForm(goldfishTests, tilapiaTests)">
+        <button class="button button-positive" ng-click="submitForm(data.tankSelect, tests)">
           Submit
         </button>
       </div>

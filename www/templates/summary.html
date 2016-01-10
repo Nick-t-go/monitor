@@ -1,4 +1,4 @@
-<ion-view view-title="summary">
+<ion-view view-title="Summary">
 
   <ion-content>
     <div class="list">
@@ -8,7 +8,7 @@
           Test
         </div>
         <select name="testSelect" id="testSelect" ng-model="data.testSelect">
-          <option type="date" value="{{test.type}}" ng-repeat="test in testTypes" >{{test.type}}</option>
+          <option type="date"  ng-repeat="test in testTypes | orderBy: 'test'" >{{test}}</option>
         </select>
 
       </label>
@@ -18,17 +18,17 @@
 
       <label class="item item-input item-select">
         <div class="input-label">
-          Fish
+          Tank
         </div>
-        <select name="fishSelect" id="fishSelect" ng-model="data.fishSelect">
-          <option ng-repeat="fish in fishes" ng-model="selectedFish">{{fish}}</option>
+        <select name="tankSelect" id="tankSelect" ng-model="data.tankSelect">
+          <option ng-repeat="tank in tanks" ng-model="selectedTank">{{tank}}</option>
         </select>
 
       </label>
 
     </div>
 
-    <button class="button button-full button-positive" ng-click="summarize(data.fishSelect, data.testSelect)">
+    <button class="button button-full button-positive" ng-click="summarize(data.tankSelect, data.testSelect)">
       Get Summary
     </button>
 

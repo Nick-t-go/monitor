@@ -1,4 +1,4 @@
-<ion-view view-title="report">
+<ion-view view-title="Report">
 
   <ion-content>
     <ion-spinner ng-hide="dates" icon="spiral"></ion-spinner>
@@ -19,17 +19,17 @@
 
       <label class="item item-input item-select">
         <div class="input-label">
-          Fish
+          Tank
         </div>
-        <select name="fishSelect" id="fishSelect" ng-model="data.fishSelect">
-          <option ng-repeat="fish in fishes" ng-model="selectedFish">{{fish}}</option>
+        <select name="tankSelect" id="tankSelect" ng-model="data.tankSelect">
+          <option ng-repeat="tank in tanks" ng-model="selectedTank">{{tank}}</option>
         </select>
 
       </label>
 
     </div>
 
-    <button class="button button-full button-positive" ng-click="getReport(data.fishSelect, data.dateSelect)">
+    <button class="button button-full button-positive" ng-click="getReport(data.tankSelect, data.dateSelect)">
       Get Report
     </button>
 

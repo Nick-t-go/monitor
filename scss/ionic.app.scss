@@ -46,11 +46,34 @@ input {
   text-align:right;
 }
 
+.item.item-input.item-floating-label.row{
+  height: 5em;
+}
+
+input.input-fix {
+  width: 100px;
+}
+
+div.list.add-test {
+  margin-bottom: 5px;
+}
+
+
+
 //@mixin linear-gradient($direction, $color-stops...) {
 //  background: nth(nth($color-stops, 1), 1);
 //  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
 //  background: linear-gradient($direction, $color-stops);
 //}
+
+.error-message {
+  color: crimson;
+}
+
+.not-active {
+  pointer-events: none;
+  cursor: default;
+}
 
 .Temperature {
   background-image: linear-gradient(to right,#CC00FF ,#CC0000);

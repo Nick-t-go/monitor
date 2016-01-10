@@ -24,8 +24,11 @@
         <ion-item ng-hide="!authData" menu-close ng-click="login()">
           Log Out
         </ion-item>
-        <ion-item menu-close href="#/app/watertests">
+        <ion-item ng-hide="!authData" menu-close href="#/app/watertests">
           Water Tests
+        </ion-item>
+        <ion-item ng-hide="!authData" menu-close href="#/app/setup">
+          Setup
         </ion-item>
       </ion-list>
     </ion-content>
