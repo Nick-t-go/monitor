@@ -1,0 +1,81 @@
+<ion-view view-title="Setup Tests">
+
+  <ion-content>
+    <ion-list>
+      <ion-radio ng-model="choice" ng-value="'My Tests'">My Tests</ion-radio>
+      <ion-radio ng-model="choice" ng-value="'Add Test'">Add Tests</ion-radio>
+    </ion-list>
+    <div ng-show="choice==='My Tests'">
+      <div ng-repeat="myTest in myTests" class="card">
+        <div class="item item-divider row">
+          <div class="col">
+          {{myTest.type}}
+          </div>
+          <button class="col-offset-67 button icon ion-trash-b" ng-click="confirmDelete(myTest.type)"></button>
+        </div>
+        <div class="item item-text-wrap">
+          Min: {{myTest.min}} Max: {{myTest.max}} Step: {{myTest.step}}
+        </div>
+        <div class="item item-divider" ng-style="{'background-image': 'linear-gradient(to right,' +myTest.colors.join(',')+ ')'}">
+        </div>
+      </div>
+    </div>
+
+    <div ng-show="choice==='Add Test'">
+      <form name="test" ng-submit="testCreate(test, testColors)" novalidate>
+        <div class="item item-divider">
+          <label class="item item-input">
+            <input type="text" ng-model="test.name" placeholder="Test Name" ng-minlength="1" ng-maxlength="25" required>
+          </label>
+            <i ng-show="!test.$pristine && !test.name" class="error-message">Name is required.<br></i>
+            <i ng-show="test.max < test.min && !test.name.$pristine" class="error-message">Max must be more than Min.<br></i>
+            <i ng-show="test.max < test.step && !test.name.$pristine" class="error-message">Step must be less than max.<br></i>
+        </div>
+        <div class="list">
+
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <input ng-model="test.min" min="0" type="number" placeholder="Min" required>
+            </label>
+            <button class="button button-small icon ion-information-circled" ng-click="showInfo(msgMin)">
+            </button>
+          </div>
+
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <input ng-model="test.max" min="0" type="number" placeholder="Max" required>
+            </label>
+            <button class="button button-small icon ion-information-circled" ng-click="showInfo(msgMax)">
+            </button>
+          </div>
+
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <input ng-model="test.step" min="0" type="number" placeholder="Step" required>
+            </label>
+            <button class="button button-small icon ion-information-circled" ng-click="showInfo(msgStep)">
+            </button>
+          </div>
+
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <input style="width: 50%" ng-model="colorNum" min="2" max="6"  type="number" placeholder="Colors" required>
+            </label>
+            <button class="button button-small icon ion-information-circled" ng-click="showInfo(msgColor)">
+            </button>
+          </div>
+
+          <div ng-show="colorNum" class="row padding-top"> Click button to Pick Color</div>
+            <div class="row">
+              <a ng-repeat="colorVal in [] | range: colorNum" class="button col-{{100/colorNum}}" color-picker="" ng-model="testColors[colorVal]" modal-title="Choose a color" color-box="{{testColors[colorVal]}}" modal-class="vcc" header-footer-class="bar-royal">
+                <p>{{colorVal + 1}}</p>
+              </a>
+            </div>
+            <div ng-show="colorNum" class="row" ng-style="{'background-image': 'linear-gradient(to right,' +testColors.join(',')+ ')'}">Sample</div>
+        </div>
+        <button type="submit" class="button button-full button-positive icon-left ion-plus-round" ng-disabled="test.$invalid || testColors.length<2">Add Test</button>
+      </form>
+    </div>
+  </ion-content>
+
+</ion-view>

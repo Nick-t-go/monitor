@@ -11,6 +11,7 @@
     "angular-animate": "~1.4.3",
     "d3": "~3.5.12",
     "angular-sanitize": "~1.4.3",
-    "angular":"~1.4.3"
+    "angular": "~1.4.3",
+    "ionic-color-picker": "~1.0.3"
   }
 }

@@ -1,0 +1,10 @@
+<ion-view view-title="Setup">
+  <ion-content id="setup">
+    <ion-list>
+      <ion-item ng-repeat="menuItem in setupMenu" href="#/app/setup/{{menuItem.id}}" class="item icon-left">
+        <i class="{{menuItem.icon}}"></i>
+        {{menuItem.title}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

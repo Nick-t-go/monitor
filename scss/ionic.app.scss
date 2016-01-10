@@ -1,3 +1,6 @@
+
+
+
 /*
 To customize the look and feel of Ionic, you can override the variables
 in ionic's _variables.scss file.
@@ -18,6 +21,85 @@ $dark:                            #444 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
-// Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
+
+#login, #sideMenu, #waterTests{
+  background: url("../img/background_img.gif");
+  background-position: center bottom;
+  background-repeat:no-repeat;
+}
+
+.bar.bar-stable{
+  border-color: #6b46e5;
+  background-color: #886aea;
+}
+
+.bar.bar-stable .title{
+  color: white;
+}
+
+.bar-stable .button.button-clear{
+  color: white;
+}
+
+input {
+  text-align:right;
+}
+
+.item.item-input.item-floating-label.row{
+  height: 5em;
+}
+
+input.input-fix {
+  width: 100px;
+}
+
+div.list.add-test {
+  margin-bottom: 5px;
+}
+
+
+
+//@mixin linear-gradient($direction, $color-stops...) {
+//  background: nth(nth($color-stops, 1), 1);
+//  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+//  background: linear-gradient($direction, $color-stops);
+//}
+
+.error-message {
+  color: crimson;
+}
+
+.not-active {
+  pointer-events: none;
+  cursor: default;
+}
+
+.Temperature {
+  background-image: linear-gradient(to right,#CC00FF ,#CC0000);
+}
+
+.Nitrite {
+  background-image: linear-gradient(to right,#92DBEA ,#C9AEEC,#C0ACF1,#CB88ED, #E169E3, #B558A7);
+}
+
+.Nitrate {
+  background-image: linear-gradient(to right,#FBFD3A, #FAEE41, #F48938, #EF4038, #EB3142, #EA415C, #9F122E)
+}
+
+.Phosphate {
+  background-image: linear-gradient(to right, #F7F7B5, #F7FBAC, #DFEA99, #C7F4A8,#A4E6BC,#3F565A, #16384F)
+}
+
+.PH {
+  background-image: linear-gradient(to right, #B33D13, #B6A33E, #737F02, #276011, #0A341D, #09353E, #072075)
+}
+
+.Ammonia {
+  background-image: linear-gradient(to right, #FBFD48,#F4FD37, #DFFC38, #86F830, #58DA38, #34C642, #1D724B)
+
+}
+
+// Include all of Ionic
+
 

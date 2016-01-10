@@ -1,9 +1,9 @@
 <ion-view view-title="Water Tests Menu">
   <ion-content id="waterTests">
     <ion-list>
-      <ion-item ng-repeat="playlist in playlists" href="#/app/watertests/{{playlist.id}}" class="item icon-left">
-        <i class="{{playlist.icon}}"></i>
-        {{playlist.title}}
+      <ion-item ng-repeat="menuItem in waterTestMenu" href="#/app/watertests/{{menuItem.id}}" class="item icon-left">
+        <i class="{{menuItem.icon}}"></i>
+        {{menuItem.title}}
       </ion-item>
     </ion-list>
   </ion-content>
