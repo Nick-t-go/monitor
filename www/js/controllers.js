@@ -2,107 +2,23 @@ angular.module('starter.controllers', ['app.factories'])
 
 .controller('AppCtrl', function($scope, $state, $ionicModal, $timeout, Auth, Tests, $rootScope, $cordovaToast) {
 
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-  // Form data for the login modal
-  $scope.loginData = {};
-
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
-
   // Open the login modal
   $scope.login = function() {
-    $scope.modal.show();
+    $state.go('app.login');
   };
-
-  $scope.doLogin = function(user) {
-    Auth.getAuth().$authWithPassword({email: user.email, password: user.password})
-      .then(function(authData) {
-        console.log(authData);
-        $scope.loginData = null;
-        $scope.modal.hide();
-
-        // User successfully logged in
-      }).catch(function(error) {
-          console.log(error);
-      });
-  };
-
-    $scope.doLogOut = function() {
-      Auth.getAuth().$unauth();
-    };
-
-
-
-
-  // Google Oauth
-  $scope.gLogin = function() {
-    Auth.getAuth().$authWithOAuthRedirect("google").then(function(authData) {
-      // User successfully logged in
-    }).catch(function(error) {
-      if (error.code === "TRANSPORT_UNAVAILABLE") {
-        Auth.getAuth().$authWithOAuthPopup("google").then(function(authData) {
-          console.log("autheticated");
-        });
-      } else {
-        console.log(error);
-      }
-    });
-
-  };
-
-
-  //Next thing after auth occurs
-  Auth.getAuth().$onAuth(function(authData) {
-    if (authData === null) {
-      console.log("Not logged in yet");
-    } else {
-      $rootScope.user = authData;
-
-    }
-    $scope.authData = authData;
-  });
-
-
-
-  ////Sign UpModal Initialize
-  //$ionicModal.fromTemplateUrl('templates/signup.html', {
-  //  scope: $scope
-  //}).then(function(modal) {
-  //  $scope.signupModal = modal;
-  //});
-
-  //Methods and properties for SignUp
-  $scope.mismatch = false;
 
   $scope.signup = function() {
     $state.go('app.signup');
     //$scope.modal.hide();
-    $scope.modal.hide();
   };
-
-
-
-
-
-
 
 })
 
 .controller('SignupCtrl', function($scope, $ionicHistory, $ionicModal, $timeout, Auth, Tests, $rootScope, $cordovaToast){
+
+      $scope.title = "Log Out";
+
+
     $scope.closeSignUp = function(){
       $scope.signupModal.hide();
     };
@@ -117,23 +33,87 @@ angular.module('starter.controllers', ['app.factories'])
         return Auth.addNewUser(newUser)
           .then(function(){
             return Auth.getAuth().$authWithPassword({email: newUser.email, password: newUser.password})
-              .then(function(){
-                console.log('logged in first time');
-                return Auth.getAuth().$onAuth(function(authData){
+              .then(function(authData){
                   $rootScope.user = authData;
+                  $rootScope.authData = authData;
                   console.log("client", authData);
                   Tests.loadDefaults(authData.uid);
+                  $scope.newUser = null;
                   $ionicHistory.goBack();
-                  //$cordovaToast.show("User Successfully Created, And You Are Now Logged In", 'long', 'top').then(function(success) {
-                  //  console.log("The toast was shown");
-                  //}, function (error) {
-                  //  console.log("The toast was not shown due to " + error);
-                  //});
-                });
+                  $cordovaToast.show("User Successfully Created, And You Are Now Logged In", 'long', 'top').then(function(success) {
+                    console.log("The toast was shown");
+                  }, function (error) {
+                    console.log("The toast was not shown due to " + error);
+                  });
               });
           });
       }
     };
+  })
+
+.controller('LoginCtrl', function($scope, $state, $ionicModal, $timeout, Auth, Tests, $rootScope, $cordovaToast) {
+
+    $scope.loginData = {};
+
+    $scope.doLogin = function(user) {
+      Auth.getAuth().$authWithPassword({email: user.email, password: user.password})
+        .then(function(authData) {
+          console.log(authData);
+          $scope.loginData = null;
+          $cordovaToast.show("You Are Now Logged In", 'long', 'top').then(function(success) {
+            console.log("The toast was shown");
+          }, function (error) {
+            console.log("The toast was not shown due to " + error);
+          });
+          // User successfully logged in
+        }).catch(function(error) {
+          console.log(error);
+        });
+    };
+
+    $scope.doLogOut = function() {
+      $rootScope.user = null;
+      $rootScope.authData = null;
+      Auth.getAuth().$unauth();
+    };
+
+
+
+
+    // Google Oauth
+    $scope.gLogin = function() {
+      Auth.getAuth().$authWithOAuthRedirect("google").then(function(authData) {
+        // User successfully logged in
+      }).catch(function(error) {
+        if (error.code === "TRANSPORT_UNAVAILABLE") {
+          Auth.getAuth().$authWithOAuthPopup("google").then(function(authData) {
+            console.log("autheticated");
+          });
+        } else {
+          console.log(error);
+        }
+      });
+
+    };
+
+
+    //Next thing after auth occurs
+    Auth.getAuth().$onAuth(function(authData) {
+      if (authData === null) {
+        console.log("Not logged in yet");
+      } else {
+        $rootScope.user = authData;
+        $rootScope.authData = authData;
+      }
+    });
+
+
+    $scope.signup = function() {
+      $state.go('app.signup');
+      //$scope.modal.hide();
+    };
+
+
   })
 
 .controller('SetupCtrl', function($scope, $rootScope) {
@@ -147,7 +127,7 @@ angular.module('starter.controllers', ['app.factories'])
 
 })
 
-.controller('SetupTanksCtrl', function($scope, $rootScope, Tests, $ionicPopup, $ionicHistory) {
+.controller('SetupTanksCtrl', function($scope, $rootScope, Tests, $ionicPopup, $ionicHistory, $cordovaToast) {
 
     $scope.tanks = [];
     $scope.edit = false;
@@ -168,6 +148,11 @@ angular.module('starter.controllers', ['app.factories'])
 
     $scope.createSubmit=function(tankName){
       Tests.createNewTank(tankName, $rootScope.user.uid);
+      $cordovaToast.show("New Tank Created", 'long', 'top').then(function(success) {
+        console.log("The toast was shown");
+      }, function (error) {
+        console.log("The toast was not shown due to " + error);
+      });
       $ionicHistory.goBack();
     };
 
@@ -193,6 +178,11 @@ angular.module('starter.controllers', ['app.factories'])
             return tank.name != tankDelete.name;
           });
           Tests.deleteTank(tankDelete, $rootScope.user.uid);
+          $cordovaToast.show("Tank Deleted", 'long', 'top').then(function(success) {
+            console.log("The toast was shown");
+          }, function (error) {
+            console.log("The toast was not shown due to " + error);
+          });
         } else {
           console.log('You are not sure');
         }
@@ -202,7 +192,7 @@ angular.module('starter.controllers', ['app.factories'])
 
 })
 
-.controller('SetupTestsCtrl', function($scope, Tests, $rootScope, $ionicPopup, $ionicHistory) {
+.controller('SetupTestsCtrl', function($scope, Tests, $rootScope, $ionicPopup, $ionicHistory, $cordovaToast) {
 
     $scope.tank = [];
     $scope.test = [];
@@ -222,6 +212,11 @@ angular.module('starter.controllers', ['app.factories'])
     $scope.testCreate = function(newTest, colors){
       newTest.colors = colors;
       Tests.createTest(newTest, $rootScope.user.uid);
+      $cordovaToast.show("Test Created", 'long', 'top').then(function(success) {
+        console.log("The toast was shown");
+      }, function (error) {
+        console.log("The toast was not shown due to " + error);
+      });
       $ionicHistory.goBack();
     };
 
@@ -254,6 +249,11 @@ angular.module('starter.controllers', ['app.factories'])
             return test.type != type;
           });
           Tests.deleteTest(type, $rootScope.user.uid);
+          $cordovaToast.show("Test Deleted", 'long', 'top').then(function(success) {
+            console.log("The toast was shown");
+          }, function (error) {
+            console.log("The toast was not shown due to " + error);
+          });
         } else {
           console.log('You are not sure');
         }
@@ -272,7 +272,7 @@ angular.module('starter.controllers', ['app.factories'])
 
 })
 
-.controller('WatertestCtrl', function($scope, $stateParams, Tests, $state, $ionicHistory, $rootScope) {
+.controller('WatertestCtrl', function($scope, $stateParams, Tests, $state, $ionicHistory, $rootScope, $cordovaToast) {
     $scope.tanks = [];
     $scope.tests = [];
 
@@ -301,6 +301,12 @@ angular.module('starter.controllers', ['app.factories'])
       });
 
       Tests.recordTime($scope.time,$rootScope.user.uid);
+
+      $cordovaToast.show("New Report Submitted", 'long', 'top').then(function(success) {
+        console.log("The toast was shown");
+      }, function (error) {
+        console.log("The toast was not shown due to " + error);
+      });
 
       $ionicHistory.goBack();
     };

@@ -23,11 +23,11 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 @import "www/lib/ionic/scss/ionic";
 
-#login, #sideMenu, #waterTests{
-  background: url("../img/background_img.gif");
-  background-position: center bottom;
-  background-repeat:no-repeat;
-}
+//#login, #sideMenu, #waterTests{
+//  background: url("../img/background_img.gif");
+//  background-position: center bottom;
+//  background-repeat:no-repeat;
+//}
 
 .bar.bar-stable{
   border-color: #6b46e5;
@@ -99,6 +99,38 @@ div.list.add-test {
   background-image: linear-gradient(to right, #FBFD48,#F4FD37, #DFFC38, #86F830, #58DA38, #34C642, #1D724B)
 
 }
+//.button.home{
+//  height: 33%;
+//}
+
+.button.home{
+  font-size: 25px;
+  margin: 30px 0;
+}
+
+.button.home.icon-left:before{
+  font-size: 50px;
+}
+
+.scroll,#login, .item-select select, .item,.padding, .item-complex .item-content, .item-radio .radio-content .item-content, .item-radio input:checked + .radio-content .item-content{
+  background-color: #B29AFF;
+  border-color: #3C277F;
+}
+
+
+.card .item{
+  background-color: white;
+}
+
+.input-label, div, .item, .item-select:after {
+ color: #3C277F;
+}
+
+#test-page .scroll{
+  background-color: white;
+}
+
+
 
 // Include all of Ionic
 

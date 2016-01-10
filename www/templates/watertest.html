@@ -1,6 +1,6 @@
-<ion-view view-title="New Report">
+<ion-view view-title="New Report" style="background-color: white">
 
-  <ion-content>
+  <ion-content id="test-page" style="background-color: white">
     <label class="item item-input item-select">
       <div class="input-label ">
         Choose a Tank
@@ -10,9 +10,9 @@
       </select>
     </label>
 
-    <div ng-show="data.tankSelect" class="item item-divider">
+    <div ng-show="data.tankSelect" class="item item-divider" style="background-color: white">
       <h2 class="col col-offset-50">{{data.tankSelect}}</h2>
-    <div ng-repeat="test in tests">
+    <div ng-repeat="test in tests" style="background-color: white">
     <div class="row">
       <label>{{test.type}}</label>
     </div>

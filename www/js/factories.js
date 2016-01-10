@@ -156,19 +156,12 @@ angular.module('app.factories', [])
           });
       },
 
-      //getDefaults: function() {
-      //  return [
-      //    {type: 'Temperature', min: 32, max: 100, step: 0.5, value: 0},
-      //    {type: "PH", min: 5, max: 9, step: 0.5, value: 0},
-      //    {type: 'Ammonia', min: 0, max: 8, step: 0.25, value: 0},
-      //    {type: 'Phosphate', min: 0, max: 10, step: 0.25, value: 0},
-      //    {type: 'Nitrite', min: 0, max: 5, step: 0.25, value: 0},
-      //    {type: 'Nitrate', min: 0, max: 160, step: 5, value: 0}
-      //  ]
-      //},
-
       loadDefaults: function(uid){
         var userRef = new Firebase('https://domemonitor.firebaseio.com/users/' + uid + '/testTypes');
+        var userArray = $firebaseArray(userRef);
+        if (userArray.length > 0){
+          return ;
+        }
         [{type: 'Temperature', min: 32, max: 100, step: 0.5, value: 0, colors:['#CC00FF' ,'#CC0000']},
           {type: "PH", min: 5, max: 9, step: 0.5, value: 0, colors:['#B33D13', '#B6A33E', '#737F02', '#276011', '#0A341D', '#09353E', '#072075']},
           {type: 'Ammonia', min: 0, max: 8, step: 0.25, value: 0, colors:['#FBFD48','#F4FD37', '#DFFC38', '#86F830', '#58DA38', '#34C642', '#1D724B']},
