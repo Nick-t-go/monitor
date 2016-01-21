@@ -8,19 +8,21 @@
         </label>
         <label class="item item-input">
           <span class="input-label">Password</span>
-          <input type="password" ng-model="newUser.password" placeholder="Enter Password">
+          <input type="password" ng-model="newUser.password" placeholder="Choose Password">
         </label>
         <label class="item item-input">
-          <span class="input-label">Reenter PW</span>
-          <input  type="password" ng-model="newUser.passwordRe" placeholder="Reenter Password">
+          <span class="input-label">Verify</span>
+          <input  type="password" ng-model="newUser.passwordRe" placeholder="Verify Password">
         </label>
+
         <div ng-show="mismatch" class="card">
           <div class="item item-text-wrap" style="color:darkred;">
-            Oops Something is Wrong. Please Reenter.
+            Oops Something is Wrong. Please Try Again!
           </div>
         </div>
+
         <label class="item">
-          <button class="button button-block button-calm" type="submit">Sign On Up</button>
+          <button class="button button-block button-calm login" type="submit">Sign On Up</button>
         </label>
       </div>
     </form>

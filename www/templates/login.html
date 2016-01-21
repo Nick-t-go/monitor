@@ -1,5 +1,6 @@
-<ion-view view-title="Login/Logout">
+<ion-view view-title="Login">
   <ion-content id="login">
+    <h4 id="loginText">If you have an existing account please login below, otherwise <a class="link calm" ng-click="signup()">sign up here.</a></h4>
     <div>
       <form ng-hide="authData" ng-submit="doLogin(loginData)">
         <div class="list">
@@ -12,31 +13,21 @@
             <input type="password" ng-model="loginData.password">
           </label>
           <label class="item">
-            <button class="col button home button-calm icon-left ion-log-in" type="submit">Log in</button>
+            <button class="col button login button-calm icon-left ion-log-in" type="submit">Log in</button>
           </label>
         </div>
       </form>
+      <div class="login-error" ng-show="nope">
+        <h3 >Please Recheck Your Login Info</h3>
+      </div>
+      <h4 id="googleLoginText" style="text-align: center">If you prefer you may login with Google</h4>
       <div ng-hide="authData">
         <div class="row">
-          <div class="col col-offset-50">OR</div>
-        </div>
-        <div class="row">
-          <button ng-click="gLogin()" class="col button home button-positive icon-left ion-social-google ">
-            Log In with Google
-          </button>
-        </div>
-        <div class="row">
-          <div class="col col-offset-50">OR</div>
-        </div>
-        <div class="row">
-          <button  ng-click="signup()" class="col button home button-royal icon-left ion-person-add">
-            Sign Up
+          <button ng-click="gLogin()" class="col button login button-positive icon-left ion-social-google ">
+            Google
           </button>
         </div>
       </div>
     </div>
-
-    <button ng-hide="!authData" class="col button home icon-left ion-log-out button-assertive" ng-click="doLogOut()">Log Out</button>
-
   </ion-content>
 </ion-view>

@@ -1,11 +1,11 @@
 <ion-view view-title="Setup Tests">
 
-  <ion-content>
+  <ion-content class="setup-tests">
     <ion-list>
       <ion-radio ng-model="choice" ng-value="'My Tests'">My Tests</ion-radio>
       <ion-radio ng-model="choice" ng-value="'Add Test'">Add Tests</ion-radio>
     </ion-list>
-    <div ng-show="choice==='My Tests'">
+    <div ng-show="choice==='My Tests'" class="setup-tests">
       <div ng-repeat="myTest in myTests" class="card">
         <div class="item item-divider row">
           <div class="col">

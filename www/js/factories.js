@@ -1,11 +1,12 @@
 angular.module('app.factories', [])
 
-  .factory("Auth", function($firebaseArray, $firebaseAuth, Tests) {
+  .factory("Auth", function($firebaseArray, $firebaseAuth, $firebaseObject,Tests) {
     return {
       getAuth: function () {
         var usersRef = new Firebase("https://domemonitor.firebaseio.com/");
         return $firebaseAuth(usersRef);
       },
+
 
       addNewUser: function(user){
         var ref = new Firebase('https://domemonitor.firebaseio.com/');
@@ -17,10 +18,37 @@ angular.module('app.factories', [])
           .catch(function(error) {
             console.error("Error: ", error);
           });
+      },
+
+      getCredentials: function(uid){
+        var credRef = new Firebase('https://domemonitor.firebaseio.com/users/' + uid + '/credentials');
+        var credObj = new $firebaseObject(credRef);
+        return credObj.$loaded().then(function(){
+          return credObj;
+        });
+        }
+      };
+  })
+
+  .factory('Init',  function($firebaseArray, $firebaseObject) {
+    return {
+      init: function (uid, credItem) {
+        var ref2 = new Firebase('https://domemonitor.firebaseio.com/users/' + uid + '/credentials/new');
+        ref2.child(credItem).set(true);
+      },
+
+      editCredentials: function(uid, credItem, newData){
+        var ref = new Firebase('https://domemonitor.firebaseio.com/users/' + uid + '/credentials/');
+        var editCred = $firebaseObject(ref);
+        editCred[credItem] = newData;
+        editCred.$save(ref)
+          .then(function(data){
+          })
+          .catch(function(error){
+        });
       }
+
     };
-
-
   })
 
 
@@ -33,24 +61,24 @@ angular.module('app.factories', [])
         array.$add({
           date: time,
           val: value,
-          'tank': tank,
+          'tank': tank.$id,
           'test': test,
           'uid':uid
         });
       },
 
-      createTest: function(newTest, uid){
-        var testTypeRef = new Firebase('https://domemonitor.firebaseio.com/users/'+uid+'/testTypes');
-        var test = {
-          min: newTest.min,
-          max: newTest.max,
-          type: newTest.name,
-          step: newTest.step,
-          colors: newTest.colors,
-          value: 0
-        };
-        testTypeRef.child(test.type).set(test);
-      },
+      //createTest: function(newTest, uid){
+      //  var testTypeRef = new Firebase('https://domemonitor.firebaseio.com/users/'+uid+'/testTypes');
+      //  var test = {
+      //    min: newTest.min,
+      //    max: newTest.max,
+      //    type: newTest.name,
+      //    step: newTest.step,
+      //    colors: newTest.colors,
+      //    value: 0
+      //  };
+      //  testTypeRef.child(test.type).set(test);
+      //},
 
       deleteTest: function(type, uid){
         var deleteRef = new Firebase('https://domemonitor.firebaseio.com/users/' + uid + '/testTypes/' +type);
@@ -66,9 +94,9 @@ angular.module('app.factories', [])
       },
 
 
-      recordTime: function(time, uid){
+      recordTime: function(time, uid, tank){
         var ref2 = new Firebase('https://domemonitor.firebaseio.com/users/' + uid + '/dates');
-        ref2.child(time).set(true);
+        ref2.child(time).set(tank.$id);
       },
 
       getOneTest: function(tank, testType, uid){
@@ -93,10 +121,10 @@ angular.module('app.factories', [])
 
       getTestTypes: function (uid) {
         var ref = new Firebase('https://domemonitor.firebaseio.com/users/'+uid+'/testTypes');
-        var testTypeArray = $firebaseArray(ref);
-        return testTypeArray.$loaded()
+        var testTypeObject = $firebaseObject(ref);
+        return testTypeObject.$loaded()
           .then(function(){
-            return testTypeArray;
+            return testTypeObject;
           });
       },
 
@@ -135,15 +163,15 @@ angular.module('app.factories', [])
         });
       },
 
-      createNewTank: function(name, uid){
-        var tankRef = new Firebase('https://domemonitor.firebaseio.com/users/' + uid + '/tanks');
-        var tankToCreate = {
-          name: name,
-          type: name,
-          tests: 'all'
-        };
-        tankRef.child(name).set(tankToCreate);
-      },
+      //createNewTank: function(name, uid){
+      //  var tankRef = new Firebase('https://domemonitor.firebaseio.com/users/' + uid + '/tanks');
+      //  var tankToCreate = {
+      //    name: name,
+      //    type: name,
+      //    tests: 'all'
+      //  };
+      //  tankRef.child(name).set(tankToCreate);
+      //},
 
       getTestsByDate: function(tank, date, uid){
         var ref1 = new Firebase('https://domemonitor.firebaseio.com/users/'+uid+'/tests/');
@@ -151,7 +179,7 @@ angular.module('app.factories', [])
         return testArray.$loaded()
           .then(function(){
             return testArray.filter(function(test){
-              return test.tank === tank && test.date == date;
+              return test.tank === tank.$id && test.date == date;
             });
           });
       },

@@ -1,16 +1,15 @@
 <ion-view view-title="User Setup">
 
   <ion-content>
-    <div class="list">
-      <label class="item item-input item-floating-label">
-        <span class="input-label">User Name</span>
-        <input type="text" placeholder="User Name">
+    <ion-list>
+      <label class="item item-divider">
+        User Name
       </label>
-      <label class="item item-input item-floating-label">
-        <span class="input-label">Email</span>
-        <input type="text" placeholder="Email">
-      </label>
-    </div>
-  </ion-content>
+      <ion-item style="min-height: 50px" class="item-icon-right">
+        {{userCredentials.username}}
+        <i class="icon ion-arrow-right-b"></i>
+        <ion-option-button class="button-energized" ng-click="editPopup('User Name')">Edit</ion-option-button>
+      </ion-item>
+    </ion-list>
 
 </ion-view>

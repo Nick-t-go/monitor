@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['app.factories'])
 
-.controller('AppCtrl', function($scope, $state, $ionicModal, $timeout, Auth, Tests, $rootScope, $cordovaToast) {
+.controller('AppCtrl', function($scope, $state, $ionicModal, $timeout, Auth, Tests, $rootScope, Init) {
 
   // Open the login modal
   $scope.login = function() {
@@ -9,21 +9,42 @@ angular.module('starter.controllers', ['app.factories'])
 
   $scope.signup = function() {
     $state.go('app.signup');
-    //$scope.modal.hide();
   };
 
-})
+  $scope.initTanks = function(){
+    Init.init($rootScope.user.uid, 'tanks');
+    $state.go('app.setuptanks');
+  };
+
+  $scope.initTests = function(){
+    Init.init($rootScope.user.uid, 'tests');
+    $state.go('app.setuptests');
+  };
+
+  $scope.initUser = function(){
+    Init.init($rootScope.user.uid, 'user');
+    $state.go('app.setupuser');
+  };
+
+  $scope.firstTest = function(){
+    Init.init($rootScope.user.uid, 'firstTest');
+    $state.go('app.watertest');
+  };
+
+  $scope.doLogOut = function() {
+    $rootScope.user = null;
+    $rootScope.authData = null;
+    Auth.getAuth().$unauth();
+  };
+
+
+  })
 
 .controller('SignupCtrl', function($scope, $ionicHistory, $ionicModal, $timeout, Auth, Tests, $rootScope, $cordovaToast){
 
-      $scope.title = "Log Out";
-
-
-    $scope.closeSignUp = function(){
-      $scope.signupModal.hide();
-    };
 
     $scope.newUserTest = true;
+    $scope.mismatch =false;
 
 
     $scope.newUserSubmit = function(newUser){
@@ -51,30 +72,40 @@ angular.module('starter.controllers', ['app.factories'])
     };
   })
 
-.controller('LoginCtrl', function($scope, $state, $ionicModal, $timeout, Auth, Tests, $rootScope, $cordovaToast) {
+.controller('LoginCtrl', function($scope, $state, $ionicModal, $timeout, Auth, Tests, $rootScope, $cordovaToast, $ionicLoading) {
 
     $scope.loginData = {};
+    $scope.nope = false;
 
     $scope.doLogin = function(user) {
+      $ionicLoading.show({
+        content: 'Loading',
+        template: '<ion-spinner icon="bubbles"></ion-spinner>',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
       Auth.getAuth().$authWithPassword({email: user.email, password: user.password})
         .then(function(authData) {
+          $state.go('app.home');
           console.log(authData);
           $scope.loginData = null;
+          $scope.nope = false;
+          $ionicLoading.hide();
+
           $cordovaToast.show("You Are Now Logged In", 'long', 'top').then(function(success) {
             console.log("The toast was shown");
           }, function (error) {
             console.log("The toast was not shown due to " + error);
           });
-          // User successfully logged in
+           //User successfully logged in
         }).catch(function(error) {
           console.log(error);
-        });
-    };
+          $ionicLoading.hide();
+          $scope.nope = true;
 
-    $scope.doLogOut = function() {
-      $rootScope.user = null;
-      $rootScope.authData = null;
-      Auth.getAuth().$unauth();
+        });
     };
 
 
@@ -118,14 +149,51 @@ angular.module('starter.controllers', ['app.factories'])
 
 .controller('SetupCtrl', function($scope, $rootScope) {
   $scope.setupMenu = [
-    //{ title: 'User Setup', id: "user", icon: "ion-person" },
-    { title: 'Test Setup', id: "tests", icon: "ion-aperture" },
-    { title: 'Tank Setup', id: "tanks", icon: "ion-waterdrop" }
+    { title: 'User Preferences', id: "user", icon: "ion-person" },
+    { title: 'Test Preferences', id: "tests", icon: "ion-aperture" },
+    { title: 'Tank Preferences', id: "tanks", icon: "ion-waterdrop" }
   ];
 
 
 
 })
+
+  .controller('SetupUserCtrl', function($scope, $rootScope, $ionicPopup, Init) {
+
+
+    $scope.editPopup = function(item) {
+      $scope.data = {};
+      var popup = $ionicPopup.show({
+        template: '<input type="text" ng-model="data.new">',
+        title: 'Edit ' + item,
+        scope: $scope,
+        buttons: [
+          {text: 'Cancel'},
+          {
+            text: '<b>Save</b>', type: 'button-positive',
+            onTap: function (e) {
+              if (!$scope.data.new) {
+                //don't allow the user to close unless info added
+                e.preventDefault();
+              } else {
+                console.log($scope.data.new);
+                $rootScope.userCredentials.username = $scope.data.new;
+                $rootScope.userCredentials.$save()
+                  .then(function(){
+                    $rootScope.userCredentials.feed.push({subCat:"username", category:"setup",action:"edit", value: $scope.data.new, detail:"Username Changed to: "+ $scope.data.new, date: new Date().getTime()});
+                    $rootScope.userCredentials.$save();
+                  });
+              }
+            }
+          }
+        ]
+      });
+    };
+
+
+  })
+
+
 
 .controller('SetupTanksCtrl', function($scope, $rootScope, Tests, $ionicPopup, $ionicHistory, $cordovaToast) {
 
@@ -147,21 +215,27 @@ angular.module('starter.controllers', ['app.factories'])
     };
 
     $scope.createSubmit=function(tankName){
-      Tests.createNewTank(tankName, $rootScope.user.uid);
-      $cordovaToast.show("New Tank Created", 'long', 'top').then(function(success) {
-        console.log("The toast was shown");
-      }, function (error) {
-        console.log("The toast was not shown due to " + error);
+      //Tests.createNewTank(tankName, $rootScope.user.uid);
+      $scope.tanks.$add({
+        name: tankName,
+        type: tankName,
+        tests: 'all'
+      }).then(function() {
+        $rootScope.userCredentials.feed.push({subCat:"tank", category:"setup",action:"created", value: tankName, detail:"Created Tank: "+ tankName, date: new Date().getTime()});
+        $rootScope.userCredentials.$save();
+        $cordovaToast.show("New Tank Created", 'long', 'top').then(function (success) {
+        }, function (error) {
+          console.log("The toast was not shown due to " + error);
+        });
+        $ionicHistory.goBack();
       });
-      $ionicHistory.goBack();
     };
 
     Tests.getTanks($rootScope.user.uid)
       .then(function(tanks){
-        tanks.forEach(function(tank){
-          $scope.tanks.push(tank);
+          $scope.tanks = tanks;
+          console.log($scope.tanks);
         });
-      });
 
     $scope.confirmDelete = function(tankDelete) {
       var deletePopup = $ionicPopup.confirm({
@@ -203,15 +277,26 @@ angular.module('starter.controllers', ['app.factories'])
 
     Tests.getTestTypes($rootScope.user.uid)
       .then(function(testTypes){
-        testTypes.forEach(function(type){
-          $scope.myTests.push(type);
-        });
+        $scope.myTests = testTypes;
+        console.log($scope.myTests);
       });
 
 
     $scope.testCreate = function(newTest, colors){
       newTest.colors = colors;
-      Tests.createTest(newTest, $rootScope.user.uid);
+      $scope.myTests[newTest.name]={
+        min: newTest.min,
+        max: newTest.max,
+        type: newTest.name,
+        step: newTest.step,
+        colors: newTest.colors,
+        value: 0
+      };
+      $scope.myTests.$save()
+        .then(function(){
+          $rootScope.userCredentials.feed.push({subCat:"test", category:"setup",action:"created", value: newTest.name, detail:"Created Test: "+ newTest.name, date: new Date().getTime()});
+          $rootScope.userCredentials.$save();
+        });
       $cordovaToast.show("Test Created", 'long', 'top').then(function(success) {
         console.log("The toast was shown");
       }, function (error) {
@@ -264,9 +349,9 @@ angular.module('starter.controllers', ['app.factories'])
 
 .controller('WatertestsCtrl', function($scope) {
   $scope.waterTestMenu = [
-    { title: 'New Report', id: "watertest", icon: "ion-erlenmeyer-flask" },
+    { title: 'Record New Test Results', id: "watertest", icon: "ion-erlenmeyer-flask" },
     { title: 'Summary', id: "summary", icon: "ion-stats-bars" },
-    { title: 'Reports', id: "report", icon: "ion-ios-list-outline" }
+    { title: 'Past Reports', id: "report", icon: "ion-ios-list-outline" }
    // { title: 'To Do', id: 4, icon:"ion-android-create"}
   ];
 
@@ -275,20 +360,17 @@ angular.module('starter.controllers', ['app.factories'])
 .controller('WatertestCtrl', function($scope, $stateParams, Tests, $state, $ionicHistory, $rootScope, $cordovaToast) {
     $scope.tanks = [];
     $scope.tests = [];
+    $scope.clicked = false;
 
 
     Tests.getTestTypes($rootScope.user.uid)
       .then(function(testTypes){
-        testTypes.forEach(function(type){
-          $scope.tests.push(type);
-        });
+        $scope.tests = testTypes;
       });
 
     Tests.getTanks($rootScope.user.uid)
       .then(function(tanks){
-        tanks.forEach(function(tank){
-          $scope.tanks.push(tank.$id);
-        });
+          $scope.tanks = tanks;
       });
 
     $scope.time = new Date().getTime();
@@ -296,16 +378,23 @@ angular.module('starter.controllers', ['app.factories'])
 
 
     $scope.submitForm = function(tank, testsResults) {
+      $scope.clicked = true;
       testsResults.forEach(function (testResult) {
         Tests.addToFire(tank, testResult.type, testResult.value, $scope.time, $rootScope.user.uid);
       });
 
-      Tests.recordTime($scope.time,$rootScope.user.uid);
+      Tests.recordTime($scope.time,$rootScope.user.uid, tank);
+
+      $rootScope.userCredentials.feed.push({subCat:"watertest", category:"watertests",action:"create", value: tank.$id, detail:"New Test Results Recorded", date: $scope.time});
+      $rootScope.userCredentials.$save();
+
 
       $cordovaToast.show("New Report Submitted", 'long', 'top').then(function(success) {
         console.log("The toast was shown");
+        $scope.clicked = false;
       }, function (error) {
         console.log("The toast was not shown due to " + error);
+        $scope.clicked = false;
       });
 
       $ionicHistory.goBack();
@@ -315,7 +404,6 @@ angular.module('starter.controllers', ['app.factories'])
 })
 
 .controller('SummaryCtrl', function($scope, Tests, $rootScope) {
-    $scope.fishes = ['tilapia', 'goldfish'];
 
     $scope.testTypes = [];
     $scope.tanks = [];
@@ -323,16 +411,14 @@ angular.module('starter.controllers', ['app.factories'])
 
     Tests.getTestTypes($rootScope.user.uid)
       .then(function(testTypes){
-        testTypes.forEach(function(type){
-          $scope.testTypes.push(type.$id);
-        });
+        $scope.testTypes = testTypes;
       });
 
     Tests.getTanks($rootScope.user.uid)
       .then(function(tanks){
         tanks.forEach(function(tank){
           console.log(tank);
-          $scope.tanks.push(tank.$id);
+          $scope.tanks.push(tank.name);
         });
       });
 
@@ -408,7 +494,7 @@ angular.module('starter.controllers', ['app.factories'])
 
 
 
-.controller('ReportCtrl', function($scope, $stateParams, Tests, $log, $ionicHistory, $rootScope) {
+.controller('ReportCtrl', function($scope, $stateParams, Tests, $log, $ionicHistory, $rootScope,$ionicLoading) {
 
     $scope.tanks = [];
     $scope.dates = [];
@@ -416,16 +502,22 @@ angular.module('starter.controllers', ['app.factories'])
     Tests.getDates($rootScope.user.uid)
       .then(function(times){
         times.forEach(function(time){
-          $scope.dates.push(time.$id);
+          $scope.dates.push({time:time.$id, tank:time.$value});
         });
       });
 
+    $ionicLoading.show({
+      content: 'Loading',
+      template: '<ion-spinner icon="bubbles"></ion-spinner>',
+      animation: 'fade-in',
+      showBackdrop: true,
+      maxWidth: 200,
+      showDelay: 0
+    });
     Tests.getTanks($rootScope.user.uid)
       .then(function(tanks){
-        tanks.forEach(function(tank){
-          console.log(tank);
-          $scope.tanks.push(tank.$id);
-        });
+          $scope.tanks = tanks;
+          $ionicLoading.hide();
       });
 
     $scope.getReport = function(fish, date){
@@ -440,5 +532,22 @@ angular.module('starter.controllers', ['app.factories'])
 
 
 
+})
+
+.controller('FeedCtrl', function($scope, $rootScope, $ionicPopup, $filter){
+
+  $scope.$on('credentials available', function() {
+    $scope.feed = $rootScope.userCredentials.feed;
+    });
+  $scope.show = function(item){
+    var alertPopup = $ionicPopup.alert({
+      title: 'Info',
+      template: "On " + $filter('date')(item.date,'MM/dd/yyyy @ h:mma') + ': ' + item.detail
+    });
+
+    alertPopup.then(function(res) {
+      console.log('More Options Coming Soon');
+    });
+  };
 });
 

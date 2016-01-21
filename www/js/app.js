@@ -4,9 +4,9 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordova', 'nvd3','ionic-color-picker' ])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.directives', 'firebase', 'ngCordova', 'nvd3','ionic-color-picker' ])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, Auth, $rootScope, $state) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -20,7 +20,35 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
       StatusBar.styleDefault();
     }
   });
+
+  $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+    console.log("stateChangeStart triggered");
+    if (toState.authRequired && Auth.getAuth().$getAuth() === null){
+      // User isn’t authenticated
+      $state.go("app.home");
+      event.preventDefault();
+    }
+    else{
+      $rootScope.authData = Auth.getAuth().$getAuth();
+      $rootScope.user = Auth.getAuth().$getAuth();
+      Auth.getCredentials($rootScope.user.uid).then(function(data) {
+        $rootScope.userCredentials = data;
+        if(!$rootScope.userCredentials.feed){
+          $rootScope.userCredentials.feed = new Array({subCat:"sign up", category:"setup",action:"created", value: null, detail:"Created New Account", date: new Date().getTime()});
+          $rootScope.userCredentials.$save().then(function(){
+            $rootScope.$broadcast('credentials available');
+          });
+        }else{
+          $rootScope.$broadcast('credentials available');
+        }
+      });
+    }
+  });
+
+
 })
+
+
 
 .filter('range', function() {
     return function (input, total) {
@@ -30,6 +58,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
       return input;
     };
   })
+
+
 
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
@@ -76,7 +106,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
       views: {
         'menuContent': {
           templateUrl: 'templates/setup.html',
-          controller: 'SetupCtrl'
+          controller: 'SetupCtrl',
+          authRequired: 'true'
         }
       }
     })
@@ -85,7 +116,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
       views: {
         'menuContent': {
           templateUrl: 'templates/setup.user.html',
-          controller: 'SetupCtrl'
+          controller: 'SetupUserCtrl',
+          authRequired: 'true'
         }
       }
     })
@@ -94,7 +126,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
       views: {
         'menuContent': {
           templateUrl: 'templates/setup.tests.html',
-          controller: 'SetupTestsCtrl'
+          controller: 'SetupTestsCtrl',
+          authRequired: 'true'
         }
       }
     })
@@ -103,7 +136,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
       views: {
         'menuContent': {
           templateUrl: 'templates/setup.tanks.html',
-          controller: 'SetupTanksCtrl'
+          controller: 'SetupTanksCtrl',
+          authRequired: 'true'
         }
       }
     })
@@ -112,7 +146,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
       views: {
         'menuContent': {
           templateUrl: 'templates/watertests.html',
-          controller: 'WatertestsCtrl'
+          controller: 'WatertestsCtrl',
+          authRequired: 'true'
         }
       }
     })
@@ -122,7 +157,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
       views: {
         'menuContent': {
           templateUrl: 'templates/watertest.html',
-          controller: 'WatertestCtrl'
+          controller: 'WatertestCtrl',
+          authRequired: 'true'
         }
       }
     })
@@ -131,7 +167,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
       views: {
         'menuContent': {
           templateUrl: 'templates/report.html',
-          controller: 'ReportCtrl'
+          controller: 'ReportCtrl',
+          authRequired: 'true'
         }
       }
     })
@@ -140,7 +177,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'firebase', 'ngCordov
         views: {
           'menuContent':{
             templateUrl: 'templates/summary.html',
-            controller: 'SummaryCtrl'
+            controller: 'SummaryCtrl',
+            authRequired: 'true'
           }
         }
     });
