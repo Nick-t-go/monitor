@@ -1,29 +1,66 @@
 <ion-view view-title="Home">
   <ion-content>
-
-    <div ng-hide="authData">
-      <div  class="row">
-        <button  class="col button home icon-left ion-log-in button-positive"  ng-click="login()">Login</button>
-      </div>
-      <div class="row">
-        <br>
-      </div>
-      <div class="row">
-        <button  class="col button home icon-left ion-person-add button-calm" ng-click="signup()">Sign Up</button>
+    <div id="intro" ng-hide="authData">
+      <p class ="fade-in one" >Thank you for downloading our app. To get started recording your test results please <a class="link calm" ng-click="login()">click  here to login.</a></p>
+      <p class ="fade-in two">AquaTest makes it easy for you to store and track water test results for your aquariums, aquaponic or hydroponic systems.
+        Our goal is to provide our users with a convenient tool for storing and tracking their setup's vital information.
+        We look forward to helping you maintain a healthy aquatic ecosystem.</p> <br>
+      <div class ="fade-in three">
+        <p> AquaTest Allows You To:</p>
+         <div class="row">
+           <i class="icon ion-erlenmeyer-flask col col-10"></i>
+           <p class="col">Record Water Test Results</p>
+         </div>
+        <div class="row">
+          <i class="icon ion-ios-color-wand-outline col col-10"></i>
+          <p class="col">Customize Tests</p>
+        </div>
+        <div class="row">
+          <i class="icon ion-plus-round col col-10"></i>
+          <p class="col">Add As Many Tanks As You Want</p>
+        </div>
+        <div class="row">
+          <i class="icon ion-stats-bars col col-10"></i>
+          <p class="col">View Graphs of Test Results</p>
+        </div>
+        <div class="row">
+          <i class="icon ion-clipboard col col-10"></i>
+          <p class="col">View Past Reports</p>
+        </div>
       </div>
     </div>
 
-    <div>
-      <div ng-hide="!authData" class="row">
-        <button class="col button home icon-left ion-log-out button-assertive" ng-click="login()">Logout</button>
+    <h3 id="homeText" ng-if="userCredentials.username">Hi {{userCredentials.username}}</h3>
+    <div class="list card" ng-show="authData && (!userCredentials.new.tanks || !userCredentials.new.tests || !userCredentials.new.user || ! userCredentials.new.firstTest)">
+      <div class="item item-divider" ng-show="!userCredentials.new.tanks || !userCredentials.new.tests || !userCredentials.new.user || ! userCredentials.new.firstTest">
+        Getting Started
       </div>
-      <div class="row">
-        <br>
+      <div class="item item-button-right" ng-show="authData && !userCredentials.new.tanks">
+        Setup Tank
+        <button class="button button-calm" ng-click="initTanks()">
+          <i class="icon ion-gear-a"></i>
+        </button>
       </div>
-      <div class="row" ng-hide="!authData">
-        <button class="col button home icon-left ion-navicon button-calm" menu-toggle="left">Menu</button>
+      <div class="item item-button-right" ng-show="authData && !userCredentials.new.tests">
+        Setup Tests
+        <button class="button button-calm" ng-click="initTests()">
+          <i class="icon ion-gear-a"></i>
+        </button>
+      </div>
+      <div class="item item-button-right"  ng-hide="!authData || userCredentials.new.user">
+        Setup User
+        <button class="button button-calm" ng-click="initUser()">
+          <i class="icon ion-gear-a"></i>
+        </button>
+      </div>
+      <div class="item item-button-right" ng-hide="!authData || userCredentials.new.firstTest">
+        Create First Test
+        <button class="button button-calm" ng-click="firstTest()">
+          <i class="icon ion-gear-a"></i>
+        </button>
       </div>
     </div>
+    <user-feed ng-show="authData"></user-feed>
 
   </ion-content>
 </ion-view>

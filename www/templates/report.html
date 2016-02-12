@@ -1,35 +1,28 @@
-<ion-view view-title="Report">
+<ion-view view-title="View Past Reports">
 
   <ion-content>
     <ion-spinner ng-hide="dates" icon="spiral"></ion-spinner>
-    <div class="list">
 
+
+    <div class="list">
+      <label class="item item-input item-select">
+        <div class="input-label">Tank</div>
+        <select name="tankSelect" id="tankSelect"
+                ng-options="tank.name for tank in tanks track by tank.$id"
+                ng-model="data.tankSelect"></select>
+      </label>
+    </div>
+    <div class="list" ng-hide="tank">
       <label class="item item-input item-select">
         <div class="input-label">
           Date
         </div>
-       <select name="dateSelect" id="dateSelect" ng-model="data.dateSelect">
-         <option type="date" value="{{date}}" ng-repeat="date in dates" >{{date | date:'yyyy-MM-dd HH:mm'}}</option>
+       <select ng-disabled="!data.tankSelect" name="dateSelect" id="dateSelect" ng-model="data.dateSelect">
+         <option type="date" value="{{date.time}}"  ng-repeat="date in dates | filter: {tank: data.tankSelect.$id} || {tank: true}">{{date.time | date:'yyyy-MM-dd HH:mm' }}</option>
        </select>
-
       </label>
-
     </div>
-    <div class="list">
-
-      <label class="item item-input item-select">
-        <div class="input-label">
-          Tank
-        </div>
-        <select name="tankSelect" id="tankSelect" ng-model="data.tankSelect">
-          <option ng-repeat="tank in tanks" ng-model="selectedTank">{{tank}}</option>
-        </select>
-
-      </label>
-
-    </div>
-
-    <button class="button button-full button-positive" ng-click="getReport(data.tankSelect, data.dateSelect)">
+    <button class="button button-full button-positive" ng-disabled="!data.dateSelect || !data.tankSelect" ng-click="getReport(data.tankSelect, data.dateSelect)">
       Get Report
     </button>
 

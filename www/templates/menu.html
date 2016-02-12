@@ -1,4 +1,4 @@
-<ion-side-menus id="sideMenu" enable-menu-with-back-views="false">
+<ion-side-menus  enable-menu-with-back-views="false">
   <ion-side-menu-content>
     <ion-nav-bar class="bar-stable">
       <ion-nav-back-button>
@@ -14,21 +14,24 @@
 
   <ion-side-menu side="left">
     <ion-header-bar class="bar-stable bar-royal">
-      <h1 class="title">Menu</h1>
+      <p class="title">Menu</p>
     </ion-header-bar>
-    <ion-content>
-      <ion-list>
+    <ion-content class="side-menu">
+      <ion-list class="side-menu">
         <ion-item ng-hide="authData" menu-close ng-click="login()">
           Login
         </ion-item>
-        <ion-item ng-hide="!authData" menu-close ng-click="login()">
-          Log Out
+        <ion-item  menu-close href="#/app/home">
+          Home
         </ion-item>
         <ion-item ng-hide="!authData" menu-close href="#/app/watertests">
           Water Tests
         </ion-item>
         <ion-item ng-hide="!authData" menu-close href="#/app/setup">
           Setup
+        </ion-item>
+        <ion-item ng-hide="!authData" menu-close ng-click="doLogOut()">
+          Log Out
         </ion-item>
       </ion-list>
     </ion-content>

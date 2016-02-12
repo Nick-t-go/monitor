@@ -1,39 +1,39 @@
-<ion-view view-title="New Report" style="background-color: white">
+<ion-view view-title="Report New Test Results">
 
-  <ion-content id="test-page" style="background-color: white">
+  <ion-content id="test-page">
     <label class="item item-input item-select">
       <div class="input-label ">
         Choose a Tank
       </div>
-      <select name="tankSelect" id="tankSelect" ng-model="data.tankSelect">
-        <option ng-repeat="tank in tanks" >{{tank}}</option>
-      </select>
+      <select name="tankSelect" id="tankSelect"
+              ng-options="tank.name for tank in tanks track by tank.$id"
+              ng-model="data.tankSelect"></select>
     </label>
 
-    <div ng-show="data.tankSelect" class="item item-divider" style="background-color: white">
-      <h2 class="col col-offset-50">{{data.tankSelect}}</h2>
-    <div ng-repeat="test in tests" style="background-color: white">
+
+    <div ng-show="data.tankSelect" class="item item-divider">
+    <div ng-repeat="test in tests" class="padding-top padding-bottom one-test">
     <div class="row">
-      <label>{{test.type}}</label>
+      <p class="centered">{{test.type}}</p>
     </div>
     <div class="row">
       <div class="col">
-        <i style="white-space: nowrap;">{{test.min}}</i>
+        <i class="max-min" style="white-space: nowrap;">{{test.min}}</i>
         </div>
-      <div class="col col-33 col-offset-90">
-        <i>{{test.max}}</i>
+      <div class="col col-offset-80 max">
+        <i class="max-min">{{test.max}}</i>
         </div>
       </div>
       <div style="height:40px" ng-style="{'background-image': 'linear-gradient(to right,' +test.colors.join(',')+ ')'}">
-        <input style="width: 100%; background-color: #0000FF" type="range" ng-model="test.value" name="{{test.type}}" min="{{test.min}}" max="{{test.max}}" step="{{test.step}}" value="{{test.value}}">
+        <input style="width: 100%;" type="range" ng-model="test.value" name="{{test.type}}" min="{{test.min}}" max="{{test.max}}" step="{{test.step}}" value="{{test.value}}">
       </div>
       <p class="col col-offset-50" >{{test.value}}</p>
       </div>
       </div>
 
-    <div class ="row">
+    <div class ="row" ng-show="data.tankSelect">
       <div class="col">
-        <button class="button button-positive" ng-click="submitForm(data.tankSelect, tests)">
+        <button class="button button-positive" ng-disable="clicked" ng-click="submitForm(data.tankSelect, tests)">
           Submit
         </button>
       </div>

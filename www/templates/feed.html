@@ -1,0 +1,11 @@
+<div class="list card" >
+  <div class="item item-divider">
+    User Feed
+  </div>
+  <div class="item item-button-right" ng-repeat="item in feed | orderBy: 'date': -1" >
+    <p>{{item.date | date :'MM/dd/yy'}} {{item.detail}}</p>
+    <button class="button button-calm" ng-click="show(item)">
+      <i class="icon ion-information"></i>
+    </button>
+  </div>
+</div>

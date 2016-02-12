@@ -29,10 +29,85 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 //  background-repeat:no-repeat;
 //}
 
-.bar.bar-stable{
-  border-color: #6b46e5;
-  background-color: #886aea;
+$back-color: #CDFFFF;
+$dif-back-color: #6b46e5;
+$top-outline-color: #677F7F;
+$top-color: #278C17;
+$text-outline-color: #11994F;
+$background-grade: linear-gradient(left top, #d6f9ff 0%,#9ee8fa 100%);
+
+#intro h2{
+  color: $text-outline-color;
 }
+
+.bar.bar-stable{
+  border-color: $text-outline-color;
+  background-color: $top-color;
+}
+
+svg.nvd3-svg,.scroll-content, .scroll,#login, .item-select select,.padding, .item-complex .item-content, .item-radio .radio-content .item-content, .item-radio input:checked + .radio-content .item-content{
+  background-color: $back-color;
+  border-color: $text-outline-color;
+  background-image: repeating-linear-gradient(to right bottom,white, #d6f9ff ,white,#9ee8fa, white);
+}
+
+.item-complex .item-content, .item-radio .radio-content .item-content{
+  background: transparent;
+}
+
+.item, .input-label{
+  font-size:24px;
+}
+
+.setup-tests .scroll{
+  background-color: white;
+}
+
+
+
+
+.side-menu .item-complex .item-content, .side-menu .scroll, .item-select select, .item-radio .radio-content .item-content, .item-radio input:checked + .radio-content .item-content{
+  background: white;
+}
+
+.card .item{
+  background-color: white;
+}
+
+.input-label, div,.item p, .item, .item-select:after {
+  color: $text-outline-color;
+}
+
+.centered {
+  text-align: center;
+  margin: auto;
+  width: 60%;
+  padding: 1px;
+}
+
+
+#test-page .scroll, #test-page .item, #test-page .item-select select{
+  background-color: white;
+}
+
+
+
+#test-page i.ng-binding .max-min{
+  font-size: 100%;
+}
+
+i.max-min{
+  font-size: .75em;
+}
+
+.icon.ion.waterdrop{
+  font-size: 500px
+}
+
+.one-test{
+  border: 1px solid $top-color;
+}
+
 
 .bar.bar-stable .title{
   color: white;
@@ -75,6 +150,16 @@ div.list.add-test {
   cursor: default;
 }
 
+.login-error h3{
+  color: crimson;
+  text-align:center;
+  background-color: rgba(255, 255, 255, 0.75);
+  width: 90%;
+  padding-top: 5px;
+  margin: 0 auto;
+  font-size: 1.5em;
+}
+
 .Temperature {
   background-image: linear-gradient(to right,#CC00FF ,#CC0000);
 }
@@ -105,31 +190,103 @@ div.list.add-test {
 
 .button.home{
   font-size: 25px;
-  margin: 30px 0;
+  margin: 0 auto;
 }
 
 .button.home.icon-left:before{
   font-size: 50px;
 }
 
-.scroll,#login, .item-select select, .item,.padding, .item-complex .item-content, .item-radio .radio-content .item-content, .item-radio input:checked + .radio-content .item-content{
-  background-color: #B29AFF;
-  border-color: #3C277F;
+.button.login{
+  max-width: 300px;
+  font-size: 25px;
+  margin: 0 auto;
+}
+
+.button.login.icon-left:before{
+  font-size: 50px;
 }
 
 
-.card .item{
-  background-color: white;
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.fade-in {
+  opacity:0;  /* make things invisible upon start */
+  -webkit-animation:fadeIn ease-in 1;  /* only 1 time */
+  -moz-animation:fadeIn ease-in 1;
+  animation:fadeIn ease-in 1;
+
+  -webkit-animation-fill-mode:forwards;
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:1.2s;
+  -moz-animation-duration:1.2s;
+  animation-duration:1.2s;
 }
 
-.input-label, div, .item, .item-select:after {
- color: #3C277F;
+.fade-in.one {
+  -webkit-animation-delay: 0.4s;
+  -moz-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+  padding:10px;
 }
 
-#test-page .scroll{
-  background-color: white;
+.fade-in.two {
+
+  -webkit-animation-delay: 1.6s;
+  -moz-animation-delay:1.6s;
+  animation-delay: 1.6s;
+  padding: 10px 10px 0px 10px;
 }
 
+
+
+.fade-in.three {
+
+  -webkit-animation-delay: 2.8s;
+  -moz-animation-delay: 2.8s;
+  animation-delay: 2.8s;
+  padding:0px 10px 10px 10px;
+}
+
+.fade-in.four {
+  -webkit-animation-delay: 4.0s;
+  -moz-animation-delay: 4.0s;
+  animation-delay: 4.0s;
+  position:absolute;
+  bottom:0;
+  width:100%;
+}
+
+#intro{
+  color:white;
+  max-height:100%;
+  min-height:100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  width: 100%;
+  padding-top: 5px;
+  margin: 0 auto;
+  font-size: 1.25em;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.graph {
+  background: white;
+}
+
+
+#loginText, #googleLoginText, #homeText {
+  padding: 2px 10px;
+  color: $text-outline-color;
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+}
+
+#loginText a, #googleLoginText a{
+  height:48px;
+}
 
 
 // Include all of Ionic

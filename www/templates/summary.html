@@ -8,14 +8,13 @@
           Test
         </div>
         <select name="testSelect" id="testSelect" ng-model="data.testSelect">
-          <option type="date"  ng-repeat="test in testTypes | orderBy: 'test'" >{{test}}</option>
+          <option  ng-repeat="test in testTypes | orderBy: 'test'" >{{test.type}}</option>
         </select>
 
       </label>
 
     </div>
     <div class="list">
-
       <label class="item item-input item-select">
         <div class="input-label">
           Tank
@@ -23,17 +22,14 @@
         <select name="tankSelect" id="tankSelect" ng-model="data.tankSelect">
           <option ng-repeat="tank in tanks" ng-model="selectedTank">{{tank}}</option>
         </select>
-
       </label>
-
     </div>
 
     <button class="button button-full button-positive" ng-click="summarize(data.tankSelect, data.testSelect)">
       Get Summary
     </button>
 
-
-    <nvd3 class="padding" options="options" data="data"></nvd3>
+    <nvd3 class="graph" options="options" data="data"></nvd3>
   </ion-content>
 
 </ion-view>
