@@ -37,19 +37,19 @@
       </div>
       <div class="item item-button-right" ng-show="authData && !userCredentials.new.tanks">
         Setup Tank
-        <button class="button button-calm" ng-click="initTanks()">
+        <button class="button button-calm" ng-click="init('tanks')">
           <i class="icon ion-gear-a"></i>
         </button>
       </div>
       <div class="item item-button-right" ng-show="authData && !userCredentials.new.tests">
         Setup Tests
-        <button class="button button-calm" ng-click="initTests()">
+        <button class="button button-calm" ng-click="init('tests')">
           <i class="icon ion-gear-a"></i>
         </button>
       </div>
       <div class="item item-button-right"  ng-hide="!authData || userCredentials.new.user">
         Setup User
-        <button class="button button-calm" ng-click="initUser()">
+        <button class="button button-calm" ng-click="init('user')">
           <i class="icon ion-gear-a"></i>
         </button>
       </div>

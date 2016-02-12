@@ -11,20 +11,12 @@ angular.module('starter.controllers', ['app.factories'])
     $state.go('app.signup');
   };
 
-  $scope.initTanks = function(){
-    Init.init($rootScope.user.uid, 'tanks');
-    $state.go('app.setuptanks');
+
+  $scope.init = function(item){
+    Init.init($rootScope.user.uid, item);
+    $state.go('app.setup'+item);
   };
 
-  $scope.initTests = function(){
-    Init.init($rootScope.user.uid, 'tests');
-    $state.go('app.setuptests');
-  };
-
-  $scope.initUser = function(){
-    Init.init($rootScope.user.uid, 'user');
-    $state.go('app.setupuser');
-  };
 
   $scope.firstTest = function(){
     Init.init($rootScope.user.uid, 'firstTest');
